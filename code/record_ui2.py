@@ -1,7 +1,7 @@
 #coding=utf-8  
   
 from Tkinter import *  
-import wave  
+import wave
 import matplotlib.pyplot as plt  
 import numpy as np  
   
