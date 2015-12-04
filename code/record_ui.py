@@ -1,20 +1,23 @@
-#!usr/bin/env python  
 #coding=utf-8  
-  
+
+from __future__ import division  
 import numpy as np
 from pyaudio import PyAudio,paInt16
 from datetime import datetime
+import matplotlib.pyplot as plt  
 import wave
 from Tkinter import *
+
   
 #define of params
 CHUNK = 1024
 FORMAT = paInt16
 RATE = 16000
 CHANNELS = 1
-#sampwidth = 2
-#record time 
-RECORD_SECONDS = 5
+
+#record time in terms of sampling points
+RECORD_SECONDS = 3
+RECORD_POINTS = int(RECORD_SECONDS * RATE / CHUNK)
   
 def save_wave_file(filename, data, sampwidth):
     '''''save the date to the wav file'''
@@ -52,12 +55,14 @@ def record_wave():
     save_buffer = []
     count = 0
     
-    while count < RECORD_SECONDS * 4:
+    while count < RECORD_POINTS:
         #read CHUNK sampling data
         string_audio_data = stream.read(CHUNK)
-        save_buffer.append(string_audio_data)
-        count += 1
+        save_buffer.append(string_audio_data)        
         print '.'
+        #plt.plot(count, float(string_audio_data))
+        #plt.show()
+        count += 1
     
     sampwidth = pa.get_sample_size(FORMAT)
 
