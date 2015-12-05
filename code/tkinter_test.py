@@ -1,30 +1,6 @@
-#coding=utf-8  
 
-from __future__ import division  
-from pyaudio import PyAudio,paInt16
 from Tkinter import *
-import wave
-import numpy as np
-import matplotlib.pyplot as plt  
 
-  
-#define of params
-CHUNK = 1024
-FORMAT = paInt16
-RATE = 16000
-CHANNELS = 1
-
-#record time in terms of sampling points
-RECORD_SECONDS = 3
-RECORD_POINTS = int(RECORD_SECONDS * RATE / CHUNK)
-
-WAVFILE = '../wav/record.wav'
-
-##################
-#                #
-#      GUI       #
-#                #
-##################
 class App:
     def __init__(self, parent):       
 
@@ -84,90 +60,23 @@ class App:
                           
         
     def button_record_Click(self):
-        record_wave()
+        self.myParent.destroy() 
 
     def button_play_Click(self):
-        play_wave() 
+        self.myParent.destroy() 
 
     def button_quit_Click(self):
         self.myParent.destroy() 
 
 
-##################
-#                #
-#   RECORDING    #
-#                #
-##################
-def save_wave_file(filename, data, sampwidth):
-    '''''save the date to the wav file'''
-    wf = wave.open(filename, 'wb')
-    wf.setnchannels(CHANNELS)
-    wf.setsampwidth(sampwidth)
-    wf.setframerate(RATE)
-    wf.writeframes("".join(data))
-    wf.close()
-      
-def record_wave():
-    #open the input of wave
-    wav_in = PyAudio()
-
-    stream = wav_in.open(format = FORMAT,
-                     channels = CHANNELS,
-                     rate = RATE,
-                     input = True,
-                     frames_per_buffer = CHUNK)
-    
-    print("* recording")
-
-    save_buffer = []
-    count = 0
-    
-    while count < RECORD_POINTS:
-        #read CHUNK sampling data
-        string_audio_data = stream.read(CHUNK)
-        save_buffer.append(string_audio_data)        
-        print '.'
-        #plt.plot(count, float(string_audio_data))
-        #plt.show()
-        count += 1
-    
-    sampwidth = wav_in.get_sample_size(FORMAT)
-    save_wave_file(WAVFILE, save_buffer, sampwidth)
-    save_buffer = []
-
-    print WAVFILE, "saved"
-
-def play_wave():
-    wf = wave.open(WAVFILE, 'rb')
-
-    # instantiate PyAudio (1)
-    wav_out = PyAudio()
-
-    # open stream (2)
-    stream = wav_out.open(format = wav_out.get_format_from_width(wf.getsampwidth()),
-                channels = wf.getnchannels(),
-                rate = wf.getframerate(),
-                output = True)
-    # read data
-    data = wf.readframes(CHUNK)
-
-    # play stream (3)
-    while len(data) > 0:
-        stream.write(data)
-        data = wf.readframes(CHUNK)
-
-    # stop stream (4)
-    stream.stop_stream()
-    stream.close()
-
-    # close PyAudio (5)
-    wav_out.terminate()
-
 def main():
     root = Tk()
     root.wm_title("PyRecorder")
     display = App(root)
-    root.mainloop()      
+    root.mainloop()
       
 if __name__ == "__main__":
     main()
+  
+
+                
