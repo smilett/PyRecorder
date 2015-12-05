@@ -137,6 +137,11 @@ def record_wave():
 
     print WAVFILE, "saved"
 
+##################
+#                #
+#    PLAYING     #
+#                #
+##################
 def play_wave():
     wf = wave.open(WAVFILE, 'rb')
 
@@ -163,6 +168,12 @@ def play_wave():
     # close PyAudio (5)
     wav_out.terminate()
 
+
+##################
+#                #
+#      MAIN      #
+#                #
+##################
 def main():
     root = Tk()
     root.wm_title("PyRecorder")
