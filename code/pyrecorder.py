@@ -4,9 +4,6 @@ from __future__ import division
 from pyaudio import PyAudio,paInt16
 from Tkinter import *
 import wave
-import numpy as np
-import matplotlib.pyplot as plt  
-
   
 #define of params
 CHUNK = 1024
@@ -20,6 +17,8 @@ RECORD_POINTS = int(RECORD_SECONDS * RATE / CHUNK)
 
 WAVFILE = '../wav/record.wav'
 
+STOP = 0
+
 ##################
 #                #
 #      GUI       #
@@ -27,6 +26,8 @@ WAVFILE = '../wav/record.wav'
 ##################
 class App:
     def __init__(self, parent):       
+
+        self.myLastButtonInvoked = None  
 
         ###############################################
         #      constants for controlling layout       #
@@ -82,7 +83,7 @@ class App:
         self.button_stop = Button(self.buttons_frame, command = self.button_stop_Click)
         self.button_stop.configure(text = "Stop")  
         self.button_stop.configure(width = button_width, padx = button_padx, pady = button_pady)
-        self.button_stop.configure(state = DISABLED) 
+        #self.button_stop.configure(state = DISABLED) 
         self.button_stop.pack(side = LEFT)
         
         # play button
@@ -117,16 +118,19 @@ class App:
         Label(self.version_frame, text = myMessage_version, justify = RIGHT).pack(side = RIGHT, anchor = W)
         
     def button_record_Click(self):
-        self.button_stop.configure(state = NORMAL)
+        #self.button_stop.configure(state = NORMAL)
         record_wave()
-        self.button_play.configure(state = NORMAL)        
+        self.button_play.configure(state = NORMAL)
+        self.myLastButtonInvoked = "Record"
 
     def button_stop_Click(self):
-        self.button_stop.configure(state = DISABLED) 
+        STOP = 1
+        #self.button_stop.configure(state = DISABLED)
 
     def button_play_Click(self):
-        self.button_stop.configure(state = NORMAL)         
-        play_wave() 
+        #self.button_stop.configure(state = NORMAL)         
+        play_wave()
+        self.myLastButtonInvoked = "Play"
 
     def button_quit_Click(self):
         self.myParent.destroy()
@@ -146,7 +150,7 @@ class App:
 #                #
 ##################
 def save_wave_file(filename, data, sampwidth):
-    '''''save the date to the wav file'''
+    '''''save the data to the wav file'''
     wf = wave.open(filename, 'wb')
     wf.setnchannels(CHANNELS)
     wf.setsampwidth(sampwidth)
