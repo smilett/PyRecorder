@@ -77,6 +77,13 @@ class App:
         self.button_record.configure(text = "Record")
         self.button_record.configure(width = button_width, padx = button_padx, pady = button_pady)
         self.button_record.pack(side=LEFT)
+
+        # stop button
+        self.button_stop = Button(self.buttons_frame, command = self.button_stop_Click)
+        self.button_stop.configure(text = "Stop")  
+        self.button_stop.configure(width = button_width, padx = button_padx, pady = button_pady)
+        self.button_stop.configure(state = DISABLED) 
+        self.button_stop.pack(side = LEFT)
         
         # play button
         self.button_play = Button(self.buttons_frame, command = self.button_play_Click)
@@ -110,10 +117,15 @@ class App:
         Label(self.version_frame, text = myMessage_version, justify = RIGHT).pack(side = RIGHT, anchor = W)
         
     def button_record_Click(self):
+        self.button_stop.configure(state = NORMAL)
         record_wave()
-        self.button_play.configure(state = NORMAL) 
+        self.button_play.configure(state = NORMAL)        
+
+    def button_stop_Click(self):
+        self.button_stop.configure(state = DISABLED) 
 
     def button_play_Click(self):
+        self.button_stop.configure(state = NORMAL)         
         play_wave() 
 
     def button_quit_Click(self):
@@ -126,7 +138,6 @@ class App:
         left_blank = (w - width) / 2
         top_blank = (h - hight) / 2
         self.myParent.geometry("%dx%d+%d+%d" % (width, hight, left_blank, top_blank))
-
 
 
 ##################
