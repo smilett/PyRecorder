@@ -56,7 +56,7 @@ class App:
         #      message frame       #
         ############################
         self.message_frame = Frame(self.myContainer1) ###
-        self.message_frame.pack(side=TOP, expand=NO,  padx=10, pady=5, ipadx=5, ipady=5)
+        self.message_frame.pack(side = TOP, expand = NO,  padx = 10, pady = 5, ipadx = 5, ipady = 5)
         
         myMessage = "This is a recording programme !\n"
         Label(self.message_frame, text = myMessage, justify = LEFT).pack(side = TOP, anchor = W)
@@ -64,7 +64,7 @@ class App:
         #########################
         #      text frame       #
         #########################
-        self.text_frame = Frame(self.myContainer1, borderwidth=2,  relief=RIDGE, height=100, width=400, background="white")
+        self.text_frame = Frame(self.myContainer1, borderwidth = 2,  relief = RIDGE, height = 100, width = 400, background = "white")
         self.text_frame.pack(side = TOP, fill = BOTH, expand = YES)
 
         ###########################
@@ -96,7 +96,7 @@ class App:
         self.button_stop = Button(self.buttons_frame, command = self.button_stop_Click)
         self.button_stop.configure(text = "Stop")  
         self.button_stop.configure(width = button_width, padx = button_padx, pady = button_pady)
-        #self.button_stop.configure(state = DISABLED) 
+        self.button_stop.configure(state = DISABLED) 
         self.button_stop.pack(side = LEFT)
         
         # play button
@@ -111,7 +111,7 @@ class App:
         self.button_quit.configure(text = "Quit")
         self.button_quit.configure(width = button_width, padx = button_padx, pady = button_pady)
         self.button_quit.pack(side = LEFT)
-        
+
         #########################
         #      foot frame       #
         #########################
@@ -138,7 +138,7 @@ class App:
         self.myParent.destroy()
 
     def button_record_Click(self):
-        #self.button_stop.configure(state = NORMAL)
+        self.button_stop.configure(state = NORMAL)
         record_wave()
         self.button_play.configure(state = NORMAL)
         self.myLastButtonInvoked = "Record"
