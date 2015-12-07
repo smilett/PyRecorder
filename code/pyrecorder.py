@@ -6,201 +6,39 @@ from Tkinter import *
 import wave
   
 #define of params
-CHUNK = 1024
-FORMAT = paInt16
-RATE = 16000
+CHUNK = 1024        # frames per buffer
+FORMAT = paInt16    # bit rate: 16-bit > paInt16, 32-bit > paInt32
+RATE = 44100        # sampling rate
 CHANNELS = 1
 
-#record time in terms of sampling points
-RECORD_SECONDS = 3
-RECORD_POINTS = int(RECORD_SECONDS * RATE / CHUNK)
-
 WAVFILE = '../wav/record.wav'
-
-STOP = 0
-
-##################
-#                #
-#      GUI       #
-#                #
-##################
-class App:
-    def __init__(self, parent):       
-
-        self.myLastButtonInvoked = None  
-
-        ###############################################
-        #      constants for controlling layout       #
-        ###############################################
-        button_width = 6 
-        
-        button_padx = "2m"
-        button_pady = "1m"
-
-        buttons_frame_padx =  "3m"
-        buttons_frame_pady =  "2m"       
-        buttons_frame_ipadx = "3m"
-        buttons_frame_ipady = "1m"
-
-        ##############################
-        #      set window size       #
-        ##############################
-        self.myParent = parent
-        self.maximise()
-
-        ### Our topmost frame is called myContainer1
-        self.myContainer1 = Frame(parent)
-        self.myContainer1.pack()
-
-        ############################
-        #      message frame       #
-        ############################
-        self.message_frame = Frame(self.myContainer1) ###
-        self.message_frame.pack(side = TOP, expand = NO,  padx = 10, pady = 5, ipadx = 5, ipady = 5)
-        
-        myMessage = "This is a recording programme !\n"
-        Label(self.message_frame, text = myMessage, justify = LEFT).pack(side = TOP, anchor = W)
-
-        #########################
-        #      text frame       #
-        #########################
-        self.text_frame = Frame(self.myContainer1, borderwidth = 2,  relief = RIDGE, height = 100, width = 400, background = "white")
-        self.text_frame.pack(side = TOP, fill = BOTH, expand = YES)
-
-        ###########################
-        #      button frame       #
-        ###########################
-        self.buttons_frame = Frame(self.myContainer1)
-        self.buttons_frame.pack(side = TOP, ipadx = buttons_frame_ipadx, ipady = buttons_frame_ipady, padx = buttons_frame_padx, pady = buttons_frame_pady)                  
-
-        
-        # back button
-        self.button_back = Button(self.buttons_frame, command = self.button_back_Click)
-        self.button_back.configure(text = "Back")
-        self.button_back.configure(width = button_width, padx = button_padx, pady = button_pady)
-        self.button_back.pack(side=LEFT)
-
-        # next button
-        self.button_next = Button(self.buttons_frame, command = self.button_next_Click)
-        self.button_next.configure(text = "Next")
-        self.button_next.configure(width = button_width, padx = button_padx, pady = button_pady)
-        self.button_next.pack(side=LEFT)
-
-        # record button
-        self.button_record = Button(self.buttons_frame, command = self.button_record_Click)
-        self.button_record.configure(text = "Record")
-        self.button_record.configure(width = button_width, padx = button_padx, pady = button_pady)
-        self.button_record.pack(side=LEFT)
-
-        # stop button
-        self.button_stop = Button(self.buttons_frame, command = self.button_stop_Click)
-        self.button_stop.configure(text = "Stop")  
-        self.button_stop.configure(width = button_width, padx = button_padx, pady = button_pady)
-        self.button_stop.configure(state = DISABLED) 
-        self.button_stop.pack(side = LEFT)
-        
-        # play button
-        self.button_play = Button(self.buttons_frame, command = self.button_play_Click)
-        self.button_play.configure(text = "Play")  
-        self.button_play.configure(width = button_width, padx = button_padx, pady = button_pady)
-        self.button_play.configure(state = DISABLED) 
-        self.button_play.pack(side = LEFT)
-
-        # quit button
-        self.button_quit = Button(self.buttons_frame, command = self.button_quit_Click)
-        self.button_quit.configure(text = "Quit")
-        self.button_quit.configure(width = button_width, padx = button_padx, pady = button_pady)
-        self.button_quit.pack(side = LEFT)
-
-        #########################
-        #      foot frame       #
-        #########################
-        self.foot_frame = Frame(self.myContainer1) ###
-        self.foot_frame.pack(side = TOP, fill = BOTH, expand = YES)
-        
-        ### author_frame 
-        self.author_frame = Frame(self.foot_frame, borderwidth = 0,  relief=  RIDGE, width = 200) 
-        self.author_frame.pack(side = LEFT, fill = BOTH, expand = YES)  
-        myMessage_author = "Author: Mengxue Cao"
-        Label(self.author_frame, text = myMessage_author, justify = LEFT).pack(side = LEFT, anchor = W)
-
-        ### version_frame 
-        self.version_frame = Frame(self.foot_frame, borderwidth = 0,  relief = RIDGE, width = 200)
-        self.version_frame.pack(side = RIGHT,fill = BOTH, expand = YES)
-        myMessage_version = "Version: 0.1"
-        Label(self.version_frame, text = myMessage_version, justify = RIGHT).pack(side = RIGHT, anchor = W)
-
-        
-    def button_back_Click(self):
-        self.myParent.destroy()
-
-    def button_next_Click(self):
-        self.myParent.destroy()
-
-    def button_record_Click(self):
-        self.button_stop.configure(state = NORMAL)
-        record_wave()
-        self.button_play.configure(state = NORMAL)
-        self.myLastButtonInvoked = "Record"
-
-    def button_stop_Click(self):
-        STOP = 1
-        #self.button_stop.configure(state = DISABLED)
-
-    def button_play_Click(self):
-        #self.button_stop.configure(state = NORMAL)         
-        play_wave()
-        self.myLastButtonInvoked = "Play"
-
-    def button_quit_Click(self):
-        self.myParent.destroy()
-
-    def maximise (self):
-        w, h = self.myParent.winfo_screenwidth(), self.myParent.winfo_screenheight()
-        width = w * 0.6
-        hight = h * 0.6
-        left_blank = (w - width) / 2
-        top_blank = (h - hight) / 2
-        self.myParent.geometry("%dx%d+%d+%d" % (width, hight, left_blank, top_blank))
-
 
 ##################
 #                #
 #   RECORDING    #
 #                #
-##################
-def save_wave_file(filename, data, sampwidth):
+##################     
+def record():
+    global state
+    global save_buffer
+    global stream_in
+
+    if state == 1:                            
+        string_audio_data = stream_in.read(CHUNK)
+        save_buffer.append(string_audio_data)        
+        print '.'
+
+        #pause = int(100*CHUNK/RATE)
+        root.after(1, record)
+
+def save_wave_file(filename, data_in, sampwidth):
     '''''save the data to the wav file'''
     wf = wave.open(filename, 'wb')
     wf.setnchannels(CHANNELS)
     wf.setsampwidth(sampwidth)
     wf.setframerate(RATE)
-    wf.writeframes("".join(data))
+    wf.writeframes("".join(data_in))
     wf.close()
-      
-def record_wave():
-    #open the input of wave
-    wav_in = PyAudio()
-
-    stream = wav_in.open(format = FORMAT, channels = CHANNELS, rate = RATE, input = True, frames_per_buffer = CHUNK)
-    
-    print("* recording")
-
-    save_buffer = []
-    count = 0
-    
-    while count < RECORD_POINTS:
-        #read CHUNK sampling data
-        string_audio_data = stream.read(CHUNK)
-        save_buffer.append(string_audio_data)        
-        print '.'
-        count += 1
-    
-    sampwidth = wav_in.get_sample_size(FORMAT)
-    save_wave_file(WAVFILE, save_buffer, sampwidth)
-    save_buffer = []
-
-    print WAVFILE, "saved"
 
 ##################
 #                #
@@ -208,26 +46,226 @@ def record_wave():
 #                #
 ##################
 def play_wave():
-    wf = wave.open(WAVFILE, 'rb')
+    global state
+    global data_out
+    global stream_out
+    global wav_out
+    global wf
+
+    if len(data_out) == 0:
+        stream_out.stop_stream()
+        stream_out.close()
+        wav_out.terminate()
+
+    elif state == 2:
+        stream_out.write(data_out)
+        data_out = wf.readframes(CHUNK)
+
+        root.after(1, play_wave)     
+
+
+#######################
+#                     #
+#    BUTTON CLICK     #
+#                     #
+#######################
+def button_record_Click():
+    global sampwidth
+    global wav_in
+    global stream_in
+    global state
+
+    state = 1
+    button_stop.configure(state = NORMAL)     
+
+    wav_in = PyAudio()
+    stream_in = wav_in.open(format = FORMAT, channels = CHANNELS, rate = RATE, input = True, frames_per_buffer = CHUNK) 
+    sampwidth = wav_in.get_sample_size(FORMAT)
+    print("* recording")
+    record() 
+
+
+def button_play_Click():
+    global state
+    global wav_out
+    global stream_out
+    global data_out
+    global wf
+
+    state = 2
+    button_stop.configure(state = NORMAL)
 
     wav_out = PyAudio()
 
-    # open stream (2)
-    stream = wav_out.open(format = wav_out.get_format_from_width(wf.getsampwidth()),
+    wf = wave.open(WAVFILE, 'rb')
+
+    stream_out = wav_out.open(format = wav_out.get_format_from_width(wf.getsampwidth()),
                 channels = wf.getnchannels(),
                 rate = wf.getframerate(),
                 output = True)
     
-    data = wf.readframes(CHUNK) # read data
+    data_out = wf.readframes(CHUNK) # read data
+    play_wave()
+   
+def button_stop_Click():
+    global state
+    global save_buffer
+    global wav_in
+    global wav_out
+    global stream_in
+    global stream_out
+    global data_out
 
-    # play stream (3)
-    while len(data) > 0:
-        stream.write(data)
-        data = wf.readframes(CHUNK)
+    # stop fron recording
+    if state == 1:
+        state = 0
+        save_wave_file(WAVFILE, save_buffer, sampwidth)
 
-    stream.stop_stream()
-    stream.close()
-    wav_out.terminate() 
+        # clean up
+        save_buffer = []
+        stream_in.stop_stream()
+        stream_in.close()
+        wav_in.terminate() 
+
+        button_stop.configure(state = DISABLED)
+        button_play.configure(state = NORMAL)
+
+    # stop from playing
+    elif state == 2:
+        state = 0
+        stream_out.stop_stream()
+        stream_out.close()
+        wav_out.terminate() 
+        data_out = []
+
+        button_stop.configure(state = DISABLED)
+        #button_play.configure(state = NORMAL)
+
+
+def button_back_Click():
+    root.destroy()
+
+def button_next_Click():
+    root.destroy()
+
+def button_quit_Click():
+    root.destroy()
+
+def maximise ():
+    w, h = root.winfo_screenwidth(), root.winfo_screenheight()
+    width = w * 0.6
+    hight = h * 0.6
+    left_blank = (w - width) / 2
+    top_blank = (h - hight) / 2
+    root.geometry("%dx%d+%d+%d" % (width, hight, left_blank, top_blank))
+
+##################
+#                #
+#      GUI       #
+#                #
+##################
+root = Tk()
+
+###############################################
+#      constants for controlling layout       #
+###############################################
+button_width = 6 
+        
+button_padx = "2m"
+button_pady = "1m"
+
+buttons_frame_padx =  "3m"
+buttons_frame_pady =  "2m"       
+buttons_frame_ipadx = "3m"
+buttons_frame_ipady = "1m"
+
+##############################
+#      set window size       #
+##############################
+maximise()
+
+### Our topmost frame is called myContainer1
+myContainer1 = Frame(root)
+myContainer1.pack()
+
+############################
+#      message frame       #
+############################
+message_frame = Frame(myContainer1) ###
+message_frame.pack(side = TOP, expand = NO,  padx = 10, pady = 5, ipadx = 5, ipady = 5)
+        
+myMessage = "This is a recording programme !\n"
+Label(message_frame, text = myMessage, justify = LEFT).pack(side = TOP, anchor = W)
+
+#########################
+#      text frame       #
+#########################
+text_frame = Frame(myContainer1, borderwidth = 2,  relief = RIDGE, height = 100, width = 400, background = "white")
+text_frame.pack(side = TOP, fill = BOTH, expand = YES)
+
+###########################
+#      button frame       #
+###########################
+buttons_frame = Frame(myContainer1)
+buttons_frame.pack(side = TOP, ipadx = buttons_frame_ipadx, ipady = buttons_frame_ipady, padx = buttons_frame_padx, pady = buttons_frame_pady)                  
+
+        
+# back button
+button_back = Button(buttons_frame, command = button_back_Click)
+button_back.configure(text = "Back")
+button_back.configure(width = button_width, padx = button_padx, pady = button_pady)
+button_back.pack(side=LEFT)
+
+# next button
+button_next = Button(buttons_frame, command = button_next_Click)
+button_next.configure(text = "Next")
+button_next.configure(width = button_width, padx = button_padx, pady = button_pady)
+button_next.pack(side=LEFT)
+
+# record button
+button_record = Button(buttons_frame, command = button_record_Click)
+button_record.configure(text = "Record")
+button_record.configure(width = button_width, padx = button_padx, pady = button_pady)
+button_record.pack(side=LEFT)
+
+# stop button
+button_stop = Button(buttons_frame, command = button_stop_Click)
+button_stop.configure(text = "Stop")  
+button_stop.configure(width = button_width, padx = button_padx, pady = button_pady)
+button_stop.configure(state = DISABLED) 
+button_stop.pack(side = LEFT)
+        
+# play button
+button_play = Button(buttons_frame, command = button_play_Click)
+button_play.configure(text = "Play")  
+button_play.configure(width = button_width, padx = button_padx, pady = button_pady)
+button_play.configure(state = DISABLED) 
+button_play.pack(side = LEFT)
+
+# quit button
+button_quit = Button(buttons_frame, command = button_quit_Click)
+button_quit.configure(text = "Quit")
+button_quit.configure(width = button_width, padx = button_padx, pady = button_pady)
+button_quit.pack(side = LEFT)
+
+#########################
+#      foot frame       #
+#########################
+foot_frame = Frame(myContainer1) ###
+foot_frame.pack(side = TOP, fill = BOTH, expand = YES)
+        
+### author_frame 
+author_frame = Frame(foot_frame, borderwidth = 0,  relief=  RIDGE, width = 200) 
+author_frame.pack(side = LEFT, fill = BOTH, expand = YES)  
+myMessage_author = "Author: Mengxue Cao"
+Label(author_frame, text = myMessage_author, justify = LEFT).pack(side = LEFT, anchor = W)
+
+### version_frame 
+version_frame = Frame(foot_frame, borderwidth = 0,  relief = RIDGE, width = 200)
+version_frame.pack(side = RIGHT,fill = BOTH, expand = YES)
+myMessage_version = "Version: 0.1"
+Label(version_frame, text = myMessage_version, justify = RIGHT).pack(side = RIGHT, anchor = W)
+
 
 ##################
 #                #
@@ -235,10 +273,14 @@ def play_wave():
 #                #
 ##################
 def main():
-    root = Tk()
-    root.wm_title("PyRecorder")
-    display = App(root)
-    root.mainloop()      
+    global state
+    global save_buffer
+
+    state = 0
+    save_buffer = []
+
+    root.wm_title('PyRecorder')
+    root.mainloop()
       
 if __name__ == "__main__":
     main()
