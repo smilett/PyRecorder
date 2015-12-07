@@ -129,6 +129,7 @@ class App:
         self.version_frame.pack(side = RIGHT,fill = BOTH, expand = YES)
         myMessage_version = "Version: 0.1"
         Label(self.version_frame, text = myMessage_version, justify = RIGHT).pack(side = RIGHT, anchor = W)
+
         
     def button_back_Click(self):
         self.myParent.destroy()
