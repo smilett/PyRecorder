@@ -5,7 +5,7 @@ from pyaudio import PyAudio,paInt16
 from Tkinter import *
 import wave
   
-#define of params
+# define of parameters
 CHUNK = 1024        # frames per buffer
 FORMAT = paInt16    # bit rate: 16-bit > paInt16, 32-bit > paInt32
 RATE = 44100        # sampling rate
@@ -26,13 +26,11 @@ def record():
     if state == 1:                            
         string_audio_data = stream_in.read(CHUNK)
         save_buffer.append(string_audio_data)        
-        print '.'
 
         #pause = int(100*CHUNK/RATE)
         root.after(1, record)
 
 def save_wave_file(filename, data_in, sampwidth):
-    '''''save the data to the wav file'''
     wf = wave.open(filename, 'wb')
     wf.setnchannels(CHANNELS)
     wf.setsampwidth(sampwidth)
@@ -50,7 +48,7 @@ def play_wave():
     global data_out
     global stream_out
     global wav_out
-    global wf
+    global wave_form
 
     if len(data_out) == 0:
         stream_out.stop_stream()
@@ -59,7 +57,7 @@ def play_wave():
 
     elif state == 2:
         stream_out.write(data_out)
-        data_out = wf.readframes(CHUNK)
+        data_out = wave_form.readframes(CHUNK)
 
         root.after(1, play_wave)     
 
@@ -90,21 +88,21 @@ def button_play_Click():
     global wav_out
     global stream_out
     global data_out
-    global wf
+    global wave_form
 
     state = 2
     button_stop.configure(state = NORMAL)
 
     wav_out = PyAudio()
 
-    wf = wave.open(WAVFILE, 'rb')
+    wave_form = wave.open(WAVFILE, 'rb')
 
-    stream_out = wav_out.open(format = wav_out.get_format_from_width(wf.getsampwidth()),
-                channels = wf.getnchannels(),
-                rate = wf.getframerate(),
+    stream_out = wav_out.open(format = wav_out.get_format_from_width(wave_form.getsampwidth()),
+                channels = wave_form.getnchannels(),
+                rate = wave_form.getframerate(),
                 output = True)
     
-    data_out = wf.readframes(CHUNK) # read data
+    data_out = wave_form.readframes(CHUNK) # read data
     play_wave()
    
 def button_stop_Click():
@@ -140,7 +138,6 @@ def button_stop_Click():
 
         button_stop.configure(state = DISABLED)
         #button_play.configure(state = NORMAL)
-
 
 def button_back_Click():
     root.destroy()
