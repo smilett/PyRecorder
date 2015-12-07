@@ -73,6 +73,19 @@ class App:
         self.buttons_frame = Frame(self.myContainer1)
         self.buttons_frame.pack(side = TOP, ipadx = buttons_frame_ipadx, ipady = buttons_frame_ipady, padx = buttons_frame_padx, pady = buttons_frame_pady)                  
 
+        
+        # back button
+        self.button_back = Button(self.buttons_frame, command = self.button_back_Click)
+        self.button_back.configure(text = "Back")
+        self.button_back.configure(width = button_width, padx = button_padx, pady = button_pady)
+        self.button_back.pack(side=LEFT)
+
+        # next button
+        self.button_next = Button(self.buttons_frame, command = self.button_next_Click)
+        self.button_next.configure(text = "Next")
+        self.button_next.configure(width = button_width, padx = button_padx, pady = button_pady)
+        self.button_next.pack(side=LEFT)
+
         # record button
         self.button_record = Button(self.buttons_frame, command = self.button_record_Click)
         self.button_record.configure(text = "Record")
@@ -117,6 +130,12 @@ class App:
         myMessage_version = "Version: 0.1"
         Label(self.version_frame, text = myMessage_version, justify = RIGHT).pack(side = RIGHT, anchor = W)
         
+    def button_back_Click(self):
+        self.myParent.destroy()
+
+    def button_next_Click(self):
+        self.myParent.destroy()
+
     def button_record_Click(self):
         #self.button_stop.configure(state = NORMAL)
         record_wave()
