@@ -5,15 +5,20 @@ from pyaudio import PyAudio,paInt16
 from Tkinter import *
 import wave
 import os
-  
-# define of parameters
-CHUNK = 1024        # frames per buffer
-FORMAT = paInt16    # bit rate: 16-bit > paInt16, 32-bit > paInt32
-RATE = 44100        # sampling rate
-CHANNELS = 1
 
-WAV_PATH = '../wav/'
-SCRIPT_FILE = '../script/script'
+#####################
+#                   #
+#    Declaration    #
+#                   #
+#####################   
+# define parameters
+CHUNK = 1024        # frames per buffer
+FORMAT = paInt16    # bit rate: 16-bit use "paInt16", 32-bit use "paInt32"
+RATE = 44100        # sampling rate
+CHANNELS = 1        # number of recording channels
+
+WAV_PATH = "../wav/"    # saving path for wave files
+SCRIPT_FILE = "../script/script"    # file of recording script
 
 
 ####################
@@ -26,9 +31,8 @@ SCRIPT_FILE = '../script/script'
 def read_file(filename):
     f = open(filename)  # open the file and read
     s = f.read()        # convert the content into string 
-    f.close()           # close the file
-    
-    l = s.split('\n')
+    f.close()           # close the file    
+    l = s.split("\n")   # get each sentence and store them into a list
 
     return l
 
@@ -39,18 +43,20 @@ def read_file(filename):
 #                #
 ##################
 
-# do record
-def record():
+# record sound
+def record_wav():
     global state
     global save_buffer
     global stream_in
 
+    # as long as the state is "recording", keep recording sounds
     if state == 1:                            
         string_audio_data = stream_in.read(CHUNK)
-        save_buffer.append(string_audio_data)        
+        save_buffer.append(string_audio_data) 
 
-        #pause = int(100*CHUNK/RATE)
-        root.after(1, record)
+        # call the function once a millisecond
+        # this enables Tkinter to handel other button-click events while recording
+        root.after(1, record_wav)
 
 # save waveform into wav file
 def save_wave_file(filename, data_in, sampwidth):
@@ -74,18 +80,31 @@ def play_wave():
     global stream_out
     global wav_out
     global wave_form
+    global script_count
+    global script_list
 
+    # if reaches EOF, stop playing
     if len(data_out) == 0:
+        state == 0  # change the state flag to "stopepd"
         stream_out.stop_stream()
         stream_out.close()
         wav_out.terminate()
+
+        # update button states
         button_stop.configure(state = DISABLED)
         button_record.configure(state = NORMAL)
+        if script_count > 0:
+            button_back.configure(state = NORMAL)
+        if script_count < len(script_list) - 1:
+            button_next.configure(state = NORMAL)
 
+    # else, play the sound, as long as the state is "playing"
     elif state == 2:
         stream_out.write(data_out)
         data_out = wave_form.readframes(CHUNK)
 
+        # call the function once a millisecond
+        # this enables Tkinter to handel other button-click events while playing
         root.after(1, play_wave)
 
 
@@ -101,15 +120,19 @@ def button_record_Click():
     global stream_in
     global state
 
-    state = 1
+    state = 1   # change the state flag into "recording"
+
+    # update button states
     button_stop.configure(state = NORMAL)
-    #button_play.configure(state = DISABLED)
+    button_play.configure(state = DISABLED)
+    button_back.configure(state = DISABLED)
+    button_next.configure(state = DISABLED)
 
     wav_in = PyAudio()
     stream_in = wav_in.open(format = FORMAT, channels = CHANNELS, rate = RATE, input = True, frames_per_buffer = CHUNK) 
     sampwidth = wav_in.get_sample_size(FORMAT)
     print("* recording")
-    record() 
+    record_wav() 
 
 
 def button_play_Click():
@@ -119,22 +142,25 @@ def button_play_Click():
     global data_out
     global wave_form
     global wavefile
+    global script_count
+    global script_list
 
-    state = 2
+    state = 2   # change the state flag into "playing"
 
+    # update button states
     button_stop.configure(state = NORMAL)
     button_record.configure(state = DISABLED)
+    button_back.configure(state = DISABLED)
+    button_next.configure(state = DISABLED)
 
     wav_out = PyAudio()
-
     wave_form = wave.open(WAV_PATH + wavefile, 'rb')
-
     stream_out = wav_out.open(format = wav_out.get_format_from_width(wave_form.getsampwidth()),
                 channels = wave_form.getnchannels(),
                 rate = wave_form.getframerate(),
                 output = True)
     
-    data_out = wave_form.readframes(CHUNK) # read data
+    data_out = wave_form.readframes(CHUNK)
     play_wave()
    
 def button_stop_Click():
@@ -146,10 +172,12 @@ def button_stop_Click():
     global stream_out
     global data_out
     global wavefile
+    global script_count
+    global script_list
 
-    # stop fron recording
+    # stop from recording
     if state == 1:
-        state = 0
+        state = 0   # change the state flag into "stopped"
         save_wave_file(WAV_PATH + wavefile, save_buffer, sampwidth)
 
         # clean up
@@ -158,21 +186,34 @@ def button_stop_Click():
         stream_in.close()
         wav_in.terminate() 
 
+        # update button states
         button_stop.configure(state = DISABLED)
         button_play.configure(state = NORMAL)
         button_record.configure(state = NORMAL)
+        if script_count > 0:
+            button_back.configure(state = NORMAL)
+        if script_count < len(script_list) - 1:
+            button_next.configure(state = NORMAL)
 
     # stop from playing
     elif state == 2:
-        state = 0
+        state = 0   # change the state flag into "stopped"
+
+        # clean up
         stream_out.stop_stream()
         stream_out.close()
         wav_out.terminate() 
         data_out = []
 
+        # update button states
         button_stop.configure(state = DISABLED)
         button_play.configure(state = NORMAL)
         button_record.configure(state = NORMAL)
+        if script_count > 0:
+            button_back.configure(state = NORMAL)
+        if script_count < len(script_list) - 1:
+            button_next.configure(state = NORMAL)
+
 
 def button_back_Click():
     global script_count
@@ -186,6 +227,7 @@ def button_back_Click():
         wavefile = str(script_count + 1) + '.wav'
         button_next.configure(state = NORMAL)
 
+        # if file exists, enable play button
         if os.path.isfile(WAV_PATH + wavefile):
             button_play.configure(state = NORMAL)
         else:
@@ -195,6 +237,8 @@ def button_back_Click():
         script_count = script_count - 1
         script_line.set(script_list[script_count])
         wavefile = str(script_count + 1) + '.wav'
+
+        # update button states
         button_back.configure(state = DISABLED)
         button_next.configure(state = NORMAL)
 
@@ -210,6 +254,7 @@ def button_next_Click():
         wavefile = str(script_count + 1) + '.wav'
         button_back.configure(state = NORMAL)
 
+        # if file exists, enable play button
         if os.path.isfile(WAV_PATH + wavefile):
             button_play.configure(state = NORMAL)
         else:
@@ -219,9 +264,12 @@ def button_next_Click():
         script_count = script_count + 1
         script_line.set(script_list[script_count])
         wavefile = str(script_count + 1) + '.wav'
+
+        # update button states
         button_back.configure(state = NORMAL)
         button_next.configure(state = DISABLED)
 
+        # if file exists, enable play button
         if os.path.isfile(WAV_PATH + wavefile):
             button_play.configure(state = NORMAL)
         else:
@@ -233,6 +281,7 @@ def button_quit_Click():
 def maximise ():
     global window_width
     global window_height
+
     w, h = root.winfo_screenwidth(), root.winfo_screenheight()
     window_width = w * 0.6
     window_height = h * 0.6
@@ -248,11 +297,11 @@ def maximise ():
 ##################
 root = Tk()
 
+# read in script file
 script_list = read_file(SCRIPT_FILE)
 
-###############################################
-#      constants for controlling layout       #
-###############################################
+
+# constants for controlling layout
 button_width = 8
 
 button_padx = "2m"
@@ -263,19 +312,18 @@ buttons_frame_pady =  "2m"
 buttons_frame_ipadx = "3m"
 buttons_frame_ipady = "1m"
 
-##############################
-#      set window size       #
-##############################
+
+# set window size
 maximise()
 
-### Our topmost frame is called myContainer1
-myContainer1 = Frame(root)
-myContainer1.pack()
+# create main frame
+PyRecorder = Frame(root)
+PyRecorder.pack()
 
 ############################
 #      message frame       #
 ############################
-message_frame = Frame(myContainer1) ###
+message_frame = Frame(PyRecorder)
 message_frame.pack(side = TOP, expand = NO,  padx = 10, pady = 5, ipadx = 5, ipady = 5)
         
 myMessage = "This is a recording programme !\n"
@@ -287,9 +335,9 @@ Label(message_frame, text = myMessage, justify = LEFT).pack(side = TOP, anchor =
 text_frame_height = int(0.5 * window_height)
 text_frame_width = int(0.9 * window_width)
 
-text_frame = Frame(myContainer1, borderwidth = 2,  relief = RIDGE, height = text_frame_height, width = text_frame_width, background = "white")
+text_frame = Frame(PyRecorder, borderwidth = 2,  relief = RIDGE, height = text_frame_height, width = text_frame_width, background = "white")
 text_frame.pack(side = TOP, fill = BOTH, expand = YES)
-text_frame.pack_propagate(0)    # enable size edit
+text_frame.pack_propagate(0)    # enable frame-size editing
 
 script_line = StringVar()
 
@@ -301,7 +349,7 @@ script_text.pack()
 ###########################
 #      button frame       #
 ###########################
-buttons_frame = Frame(myContainer1)
+buttons_frame = Frame(PyRecorder)
 buttons_frame.pack(side = TOP, ipadx = buttons_frame_ipadx, ipady = buttons_frame_ipady, padx = buttons_frame_padx, pady = buttons_frame_pady)                  
         
 # back button
@@ -345,7 +393,7 @@ button_quit.pack(side = LEFT)
 #########################
 #      foot frame       #
 #########################
-foot_frame = Frame(myContainer1) ###
+foot_frame = Frame(PyRecorder) ###
 foot_frame.pack(side = BOTTOM, fill = BOTH, expand = YES)
         
 ### author_frame 
@@ -377,6 +425,7 @@ def main():
     save_buffer = [] 
     wavefile = str(script_count + 1) + '.wav'
 
+    # if file exists, enable play button
     if os.path.isfile(WAV_PATH + wavefile):
         button_play.configure(state = NORMAL)
     else:
