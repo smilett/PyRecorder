@@ -45,9 +45,7 @@ def read_file(filename):
 
 # record sound
 def record_wav():
-    global state
-    global save_buffer
-    global stream_in
+    global state, ave_buffer, stream_in
     
     # as long as the state is "recording", keep recording sounds
     if state == 1:                            
@@ -75,13 +73,7 @@ def save_wave_file(filename, data_in, sampwidth):
 
 # play the audio
 def play_wave():
-    global state
-    global data_out
-    global stream_out
-    global wav_out
-    global wave_form
-    global script_count
-    global script_list
+    global state, data_out, stream_out, wav_out, wave_form, script_count, script_list
 
     # if reaches EOF, stop playing
     if len(data_out) == 0:
@@ -116,10 +108,7 @@ def play_wave():
 #######################
 
 def button_record_Click():
-    global sampwidth
-    global wav_in
-    global stream_in
-    global state
+    global sampwidth, wav_in, stream_in, state
 
     state = 1   # change the state flag into "recording"
 
@@ -137,14 +126,7 @@ def button_record_Click():
 
 
 def button_play_Click():
-    global state
-    global wav_out
-    global stream_out
-    global data_out
-    global wave_form
-    global wavefile
-    global script_count
-    global script_list
+    global state, wav_out, stream_out, data_out, wave_form, wavefile, script_count, script_list
 
     state = 2   # change the state flag into "playing"
 
@@ -166,16 +148,7 @@ def button_play_Click():
     play_wave()
    
 def button_stop_Click():
-    global state
-    global save_buffer
-    global wav_in
-    global wav_out
-    global stream_in
-    global stream_out
-    global data_out
-    global wavefile
-    global script_count
-    global script_list
+    global state, save_buffer, wav_in, wav_out, stream_in, stream_out, data_out, wavefile, script_count, script_list
 
     echo_text.configure(text = "Stopped", bg = 'white', fg = 'black')
 
@@ -220,10 +193,7 @@ def button_stop_Click():
 
 
 def button_back_Click():
-    global script_count
-    global script_line
-    global wavefile
-    global WAV_PATH
+    global script_count, script_line, wavefile, WAV_PATH
 
     if script_count > 1:        
         script_count = script_count - 1
@@ -247,10 +217,7 @@ def button_back_Click():
         button_next.configure(state = NORMAL)
 
 def button_next_Click():
-    global script_count
-    global script_line
-    global wavefile
-    global WAV_PATH
+    global script_count, script_line, wavefile, WAV_PATH
 
     if script_count < len(script_list) - 2:        
         script_count = script_count + 1
@@ -283,8 +250,7 @@ def button_quit_Click():
     root.destroy()
 
 def maximise ():
-    global window_width
-    global window_height
+    global window_width, window_height
 
     w, h = root.winfo_screenwidth(), root.winfo_screenheight()
     window_width = w * 0.6
@@ -418,10 +384,7 @@ version.pack(side = BOTTOM, anchor = E)
 #                #
 ##################
 def main():    
-    global state
-    global save_buffer
-    global script_count
-    global wavefile
+    global state, save_buffer, script_count, wavefile
 
     state = 0
     script_count = 0
