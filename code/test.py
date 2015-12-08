@@ -2,10 +2,11 @@ from Tkinter import *
 
 master = Tk()
 
-group = LabelFrame(master, text="Group", padx=5, pady=5)
-group.pack(padx=10, pady=10)
+v = StringVar()
+Label(master, textvariable=v).pack()
 
-w = Entry(group)
-w.pack()
+v.set("New Text!")
+
+v.set("New 1!")
 
 mainloop()

@@ -11,7 +11,7 @@ FORMAT = paInt16    # bit rate: 16-bit > paInt16, 32-bit > paInt32
 RATE = 44100        # sampling rate
 CHANNELS = 1
 
-WAVFILE = '../wav/record.wav'
+WAV_PATH = '../wav/'
 SCRIPT_FILE = '../script/script'
 
 
@@ -78,12 +78,13 @@ def play_wave():
         stream_out.stop_stream()
         stream_out.close()
         wav_out.terminate()
+        button_stop.configure(state = DISABLED)
 
     elif state == 2:
         stream_out.write(data_out)
         data_out = wave_form.readframes(CHUNK)
 
-        root.after(1, play_wave)     
+        root.after(1, play_wave)
 
 
 #######################
@@ -114,13 +115,14 @@ def button_play_Click():
     global stream_out
     global data_out
     global wave_form
+    global wavefile
 
     state = 2
     button_stop.configure(state = NORMAL)
 
     wav_out = PyAudio()
 
-    wave_form = wave.open(WAVFILE, 'rb')
+    wave_form = wave.open(WAV_PATH + wavefile, 'rb')
 
     stream_out = wav_out.open(format = wav_out.get_format_from_width(wave_form.getsampwidth()),
                 channels = wave_form.getnchannels(),
@@ -138,11 +140,12 @@ def button_stop_Click():
     global stream_in
     global stream_out
     global data_out
+    global wavefile
 
     # stop fron recording
     if state == 1:
         state = 0
-        save_wave_file(WAVFILE, save_buffer, sampwidth)
+        save_wave_file(WAV_PATH + wavefile, save_buffer, sampwidth)
 
         # clean up
         save_buffer = []
@@ -165,10 +168,38 @@ def button_stop_Click():
         #button_play.configure(state = NORMAL)
 
 def button_back_Click():
-    root.destroy()
+    global script_count
+    global script_line
+    global wavefile
+
+    if script_count > 1:        
+        script_count = script_count - 1
+        script_line.set(script_list[script_count])
+        wavefile = str(script_count + 1) + '.wav'
+        button_next.configure(state = NORMAL)
+    elif script_count == 1:        
+        script_count = script_count - 1
+        script_line.set(script_list[script_count])
+        wavefile = str(script_count + 1) + '.wav'
+        button_back.configure(state = DISABLED)
+        button_next.configure(state = NORMAL)
 
 def button_next_Click():
-    root.destroy()
+    global script_count
+    global script_line
+    global wavefile
+
+    if script_count < len(script_list) - 2:        
+        script_count = script_count + 1
+        script_line.set(script_list[script_count])
+        wavefile = str(script_count + 1) + '.wav'
+        button_back.configure(state = NORMAL)
+    elif script_count == len(script_list) - 2:        
+        script_count = script_count + 1
+        script_line.set(script_list[script_count])
+        wavefile = str(script_count + 1) + '.wav'
+        button_back.configure(state = NORMAL)
+        button_next.configure(state = DISABLED)
 
 def button_quit_Click():
     root.destroy()
@@ -235,10 +266,10 @@ text_frame.pack(side = TOP, fill = BOTH, expand = YES)
 text_frame.pack_propagate(0)    # enable size edit
 
 script_line = StringVar()
-script_line.set(script_list[0])
 
 # use "wraplength" option to set auto warping
 script_text = Label(text_frame, textvariable = script_line, font = ("Helvetica", 50), justify = LEFT, height = text_frame_height, width = text_frame_width, wraplength = text_frame_width)
+script_line.set(script_list[0])
 script_text.pack()
 
 ###########################
@@ -251,6 +282,7 @@ buttons_frame.pack(side = TOP, ipadx = buttons_frame_ipadx, ipady = buttons_fram
 button_back = Button(buttons_frame, command = button_back_Click)
 button_back.configure(text = "Back", font = ("Helvetica", 15))
 button_back.configure(width = button_width, padx = button_padx, pady = button_pady)
+button_back.configure(state = DISABLED)
 button_back.pack(side = LEFT)
 
 # next button
@@ -309,12 +341,16 @@ Label(version_frame, text = myMessage_version, justify = RIGHT).pack(side = RIGH
 #      MAIN      #
 #                #
 ##################
-def main():
+def main():    
     global state
     global save_buffer
+    global script_count
+    global wavefile
 
     state = 0
-    save_buffer = []    
+    script_count = 0
+    save_buffer = [] 
+    wavefile = str(script_count + 1) + '.wav'
 
     root.wm_title('PyRecorder')
     root.mainloop()
