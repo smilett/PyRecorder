@@ -149,12 +149,14 @@ def button_quit_Click():
     root.destroy()
 
 def maximise ():
+    global window_width
+    global window_height
     w, h = root.winfo_screenwidth(), root.winfo_screenheight()
-    width = w * 0.6
-    hight = h * 0.6
-    left_blank = (w - width) / 2
-    top_blank = (h - hight) / 2
-    root.geometry("%dx%d+%d+%d" % (width, hight, left_blank, top_blank))
+    window_width = w * 0.6
+    window_height = h * 0.6
+    left_blank = (w - window_width) / 2
+    top_blank = (h - window_height) / 2
+    root.geometry("%dx%d+%d+%d" % (window_width, window_height, left_blank, top_blank))
 
 ##################
 #                #
@@ -197,8 +199,17 @@ Label(message_frame, text = myMessage, justify = LEFT).pack(side = TOP, anchor =
 #########################
 #      text frame       #
 #########################
-text_frame = Frame(myContainer1, borderwidth = 2,  relief = RIDGE, height = 100, width = 400, background = "white")
+text_frame_height = int(0.5 * window_height)
+text_frame_width = int(0.9 * window_width)
+
+text_frame = Frame(myContainer1, borderwidth = 2,  relief = RIDGE, height = text_frame_height, width = text_frame_width, background = "white")
 text_frame.pack(side = TOP, fill = BOTH, expand = YES)
+text_frame.pack_propagate(0)
+
+script_line = "北京师范大学北京师范大学北学北京师范大学"
+
+script_text = Label(text_frame, text = script_line, font = ("Helvetica", 50), justify = LEFT, height = text_frame_height, width = text_frame_width, wraplength = text_frame_width)
+script_text.pack()
 
 ###########################
 #      button frame       #
@@ -211,19 +222,19 @@ buttons_frame.pack(side = TOP, ipadx = buttons_frame_ipadx, ipady = buttons_fram
 button_back = Button(buttons_frame, command = button_back_Click)
 button_back.configure(text = "Back")
 button_back.configure(width = button_width, padx = button_padx, pady = button_pady)
-button_back.pack(side=LEFT)
+button_back.pack(side = LEFT)
 
 # next button
 button_next = Button(buttons_frame, command = button_next_Click)
 button_next.configure(text = "Next")
 button_next.configure(width = button_width, padx = button_padx, pady = button_pady)
-button_next.pack(side=LEFT)
+button_next.pack(side = LEFT)
 
 # record button
 button_record = Button(buttons_frame, command = button_record_Click)
 button_record.configure(text = "Record")
 button_record.configure(width = button_width, padx = button_padx, pady = button_pady)
-button_record.pack(side=LEFT)
+button_record.pack(side = LEFT)
 
 # stop button
 button_stop = Button(buttons_frame, command = button_stop_Click)
