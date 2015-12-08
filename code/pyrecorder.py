@@ -4,6 +4,7 @@ from __future__ import division
 from pyaudio import PyAudio,paInt16
 from Tkinter import *
 import wave
+import os
   
 # define of parameters
 CHUNK = 1024        # frames per buffer
@@ -79,6 +80,7 @@ def play_wave():
         stream_out.close()
         wav_out.terminate()
         button_stop.configure(state = DISABLED)
+        button_record.configure(state = NORMAL)
 
     elif state == 2:
         stream_out.write(data_out)
@@ -100,7 +102,8 @@ def button_record_Click():
     global state
 
     state = 1
-    button_stop.configure(state = NORMAL)     
+    button_stop.configure(state = NORMAL)
+    #button_play.configure(state = DISABLED)
 
     wav_in = PyAudio()
     stream_in = wav_in.open(format = FORMAT, channels = CHANNELS, rate = RATE, input = True, frames_per_buffer = CHUNK) 
@@ -118,7 +121,9 @@ def button_play_Click():
     global wavefile
 
     state = 2
+
     button_stop.configure(state = NORMAL)
+    button_record.configure(state = DISABLED)
 
     wav_out = PyAudio()
 
@@ -155,6 +160,7 @@ def button_stop_Click():
 
         button_stop.configure(state = DISABLED)
         button_play.configure(state = NORMAL)
+        button_record.configure(state = NORMAL)
 
     # stop from playing
     elif state == 2:
@@ -165,18 +171,26 @@ def button_stop_Click():
         data_out = []
 
         button_stop.configure(state = DISABLED)
-        #button_play.configure(state = NORMAL)
+        button_play.configure(state = NORMAL)
+        button_record.configure(state = NORMAL)
 
 def button_back_Click():
     global script_count
     global script_line
     global wavefile
+    global WAV_PATH
 
     if script_count > 1:        
         script_count = script_count - 1
         script_line.set(script_list[script_count])
         wavefile = str(script_count + 1) + '.wav'
         button_next.configure(state = NORMAL)
+
+        if os.path.isfile(WAV_PATH + wavefile):
+            button_play.configure(state = NORMAL)
+        else:
+            button_play.configure(state = DISABLED)
+
     elif script_count == 1:        
         script_count = script_count - 1
         script_line.set(script_list[script_count])
@@ -188,18 +202,30 @@ def button_next_Click():
     global script_count
     global script_line
     global wavefile
+    global WAV_PATH
 
     if script_count < len(script_list) - 2:        
         script_count = script_count + 1
         script_line.set(script_list[script_count])
         wavefile = str(script_count + 1) + '.wav'
         button_back.configure(state = NORMAL)
+
+        if os.path.isfile(WAV_PATH + wavefile):
+            button_play.configure(state = NORMAL)
+        else:
+            button_play.configure(state = DISABLED)
+
     elif script_count == len(script_list) - 2:        
         script_count = script_count + 1
         script_line.set(script_list[script_count])
         wavefile = str(script_count + 1) + '.wav'
         button_back.configure(state = NORMAL)
         button_next.configure(state = DISABLED)
+
+        if os.path.isfile(WAV_PATH + wavefile):
+            button_play.configure(state = NORMAL)
+        else:
+            button_play.configure(state = DISABLED)
 
 def button_quit_Click():
     root.destroy()
@@ -308,7 +334,6 @@ button_stop.pack(side = LEFT)
 button_play = Button(buttons_frame, command = button_play_Click)
 button_play.configure(text = "Play", font = ("Helvetica", 15))  
 button_play.configure(width = button_width, padx = button_padx, pady = button_pady)
-button_play.configure(state = DISABLED) 
 button_play.pack(side = LEFT)
 
 # quit button
@@ -351,6 +376,11 @@ def main():
     script_count = 0
     save_buffer = [] 
     wavefile = str(script_count + 1) + '.wav'
+
+    if os.path.isfile(WAV_PATH + wavefile):
+        button_play.configure(state = NORMAL)
+    else:
+        button_play.configure(state = DISABLED)
 
     root.wm_title('PyRecorder')
     root.mainloop()
