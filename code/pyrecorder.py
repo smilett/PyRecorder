@@ -168,8 +168,8 @@ root = Tk()
 ###############################################
 #      constants for controlling layout       #
 ###############################################
-button_width = 6 
-        
+button_width = 8
+
 button_padx = "2m"
 button_pady = "1m"
 
@@ -204,10 +204,10 @@ text_frame_width = int(0.9 * window_width)
 
 text_frame = Frame(myContainer1, borderwidth = 2,  relief = RIDGE, height = text_frame_height, width = text_frame_width, background = "white")
 text_frame.pack(side = TOP, fill = BOTH, expand = YES)
-text_frame.pack_propagate(0)
+text_frame.pack_propagate(0)    # enable size edit
 
 script_line = "北京师范大学北京师范大学北学北京师范大学"
-
+# use "wraplength" option to set auto warping
 script_text = Label(text_frame, text = script_line, font = ("Helvetica", 50), justify = LEFT, height = text_frame_height, width = text_frame_width, wraplength = text_frame_width)
 script_text.pack()
 
@@ -220,39 +220,39 @@ buttons_frame.pack(side = TOP, ipadx = buttons_frame_ipadx, ipady = buttons_fram
         
 # back button
 button_back = Button(buttons_frame, command = button_back_Click)
-button_back.configure(text = "Back")
+button_back.configure(text = "Back", font = ("Helvetica", 15))
 button_back.configure(width = button_width, padx = button_padx, pady = button_pady)
 button_back.pack(side = LEFT)
 
 # next button
 button_next = Button(buttons_frame, command = button_next_Click)
-button_next.configure(text = "Next")
+button_next.configure(text = "Next", font = ("Helvetica", 15))
 button_next.configure(width = button_width, padx = button_padx, pady = button_pady)
 button_next.pack(side = LEFT)
 
 # record button
 button_record = Button(buttons_frame, command = button_record_Click)
-button_record.configure(text = "Record")
+button_record.configure(text = "Record", font = ("Helvetica", 15))
 button_record.configure(width = button_width, padx = button_padx, pady = button_pady)
 button_record.pack(side = LEFT)
 
 # stop button
 button_stop = Button(buttons_frame, command = button_stop_Click)
-button_stop.configure(text = "Stop")  
+button_stop.configure(text = "Stop", font = ("Helvetica", 15))  
 button_stop.configure(width = button_width, padx = button_padx, pady = button_pady)
 button_stop.configure(state = DISABLED) 
 button_stop.pack(side = LEFT)
         
 # play button
 button_play = Button(buttons_frame, command = button_play_Click)
-button_play.configure(text = "Play")  
+button_play.configure(text = "Play", font = ("Helvetica", 15))  
 button_play.configure(width = button_width, padx = button_padx, pady = button_pady)
 button_play.configure(state = DISABLED) 
 button_play.pack(side = LEFT)
 
 # quit button
 button_quit = Button(buttons_frame, command = button_quit_Click)
-button_quit.configure(text = "Quit")
+button_quit.configure(text = "Quit", font = ("Helvetica", 15))
 button_quit.configure(width = button_width, padx = button_padx, pady = button_pady)
 button_quit.pack(side = LEFT)
 
@@ -260,7 +260,7 @@ button_quit.pack(side = LEFT)
 #      foot frame       #
 #########################
 foot_frame = Frame(myContainer1) ###
-foot_frame.pack(side = TOP, fill = BOTH, expand = YES)
+foot_frame.pack(side = BOTTOM, fill = BOTH, expand = YES)
         
 ### author_frame 
 author_frame = Frame(foot_frame, borderwidth = 0,  relief=  RIDGE, width = 200) 
