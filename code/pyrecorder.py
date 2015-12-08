@@ -12,12 +12,33 @@ RATE = 44100        # sampling rate
 CHANNELS = 1
 
 WAVFILE = '../wav/record.wav'
+SCRIPT_FILE = '../script/script'
+
+
+####################
+#                  #
+#    RED SCRIPT    #
+#                  #
+#################### 
+
+# read data from file
+def read_file(filename):
+    f = open(filename)  # open the file and read
+    s = f.read()        # convert the content into string 
+    f.close()           # close the file
+    
+    l = s.split('\n')
+
+    return l
+
 
 ##################
 #                #
 #   RECORDING    #
 #                #
-##################     
+##################
+
+# do record
 def record():
     global state
     global save_buffer
@@ -30,6 +51,7 @@ def record():
         #pause = int(100*CHUNK/RATE)
         root.after(1, record)
 
+# save waveform into wav file
 def save_wave_file(filename, data_in, sampwidth):
     wf = wave.open(filename, 'wb')
     wf.setnchannels(CHANNELS)
@@ -43,6 +65,8 @@ def save_wave_file(filename, data_in, sampwidth):
 #    PLAYING     #
 #                #
 ##################
+
+# play the audio
 def play_wave():
     global state
     global data_out
@@ -67,6 +91,7 @@ def play_wave():
 #    BUTTON CLICK     #
 #                     #
 #######################
+
 def button_record_Click():
     global sampwidth
     global wav_in
@@ -158,12 +183,15 @@ def maximise ():
     top_blank = (h - window_height) / 2
     root.geometry("%dx%d+%d+%d" % (window_width, window_height, left_blank, top_blank))
 
+
 ##################
 #                #
 #      GUI       #
 #                #
 ##################
 root = Tk()
+
+script_list = read_file(SCRIPT_FILE)
 
 ###############################################
 #      constants for controlling layout       #
@@ -206,9 +234,11 @@ text_frame = Frame(myContainer1, borderwidth = 2,  relief = RIDGE, height = text
 text_frame.pack(side = TOP, fill = BOTH, expand = YES)
 text_frame.pack_propagate(0)    # enable size edit
 
-script_line = "北京师范大学北京师范大学北学北京师范大学"
+script_line = StringVar()
+script_line.set(script_list[0])
+
 # use "wraplength" option to set auto warping
-script_text = Label(text_frame, text = script_line, font = ("Helvetica", 50), justify = LEFT, height = text_frame_height, width = text_frame_width, wraplength = text_frame_width)
+script_text = Label(text_frame, textvariable = script_line, font = ("Helvetica", 50), justify = LEFT, height = text_frame_height, width = text_frame_width, wraplength = text_frame_width)
 script_text.pack()
 
 ###########################
@@ -216,7 +246,6 @@ script_text.pack()
 ###########################
 buttons_frame = Frame(myContainer1)
 buttons_frame.pack(side = TOP, ipadx = buttons_frame_ipadx, ipady = buttons_frame_ipady, padx = buttons_frame_padx, pady = buttons_frame_pady)                  
-
         
 # back button
 button_back = Button(buttons_frame, command = button_back_Click)
@@ -285,7 +314,7 @@ def main():
     global save_buffer
 
     state = 0
-    save_buffer = []
+    save_buffer = []    
 
     root.wm_title('PyRecorder')
     root.mainloop()
