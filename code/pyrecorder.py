@@ -48,7 +48,7 @@ def record_wav():
     global state
     global save_buffer
     global stream_in
-
+    
     # as long as the state is "recording", keep recording sounds
     if state == 1:                            
         string_audio_data = stream_in.read(CHUNK)
@@ -107,6 +107,25 @@ def play_wave():
         # this enables Tkinter to handel other button-click events while playing
         root.after(1, play_wave)
 
+################
+#              #
+#    TIMER     #
+#              #
+################
+def update_timer():
+    global timer_state
+    global timer
+
+    if timer_state == 1:        
+        # Every time this function is called, 
+        # we will increment 1 centisecond (1/100 of a second)
+        timer += 1
+        
+        # Update the timeText Label box with the current time
+        timeText.configure(text=timer)
+        # Call the update_timeText() function after 1 centisecond
+    root.after(1000, update_timer)
+
 
 #######################
 #                     #
@@ -119,6 +138,7 @@ def button_record_Click():
     global wav_in
     global stream_in
     global state
+    global timer_state
 
     state = 1   # change the state flag into "recording"
 
@@ -132,7 +152,8 @@ def button_record_Click():
     stream_in = wav_in.open(format = FORMAT, channels = CHANNELS, rate = RATE, input = True, frames_per_buffer = CHUNK) 
     sampwidth = wav_in.get_sample_size(FORMAT)
     print("* recording")
-    record_wav() 
+    timer_state = 1
+    record_wav()
 
 
 def button_play_Click():
@@ -174,6 +195,9 @@ def button_stop_Click():
     global wavefile
     global script_count
     global script_list
+    global timer_state
+
+    timer_state = 0
 
     # stop from recording
     if state == 1:
@@ -318,16 +342,7 @@ maximise()
 
 # create main frame
 PyRecorder = Frame(root)
-PyRecorder.pack()
-
-############################
-#      message frame       #
-############################
-message_frame = Frame(PyRecorder)
-message_frame.pack(side = TOP, expand = NO,  padx = 10, pady = 5, ipadx = 5, ipady = 5)
-        
-myMessage = "This is a recording programme !\n"
-Label(message_frame, text = myMessage, justify = LEFT).pack(side = TOP, anchor = W)
+PyRecorder.pack(expand = YES, fill = BOTH)
 
 #########################
 #      text frame       #
@@ -336,7 +351,7 @@ text_frame_height = int(0.5 * window_height)
 text_frame_width = int(0.9 * window_width)
 
 text_frame = Frame(PyRecorder, borderwidth = 2,  relief = RIDGE, height = text_frame_height, width = text_frame_width, background = "white")
-text_frame.pack(side = TOP, fill = BOTH, expand = YES)
+text_frame.pack(side = TOP, fill = BOTH, expand = YES, padx = 5, pady = 10, ipadx = 5, ipady = 5)
 text_frame.pack_propagate(0)    # enable frame-size editing
 
 script_line = StringVar()
@@ -391,6 +406,16 @@ button_quit.configure(width = button_width, padx = button_padx, pady = button_pa
 button_quit.pack(side = LEFT)
 
 #########################
+#      timer frame      #
+#########################
+timer_frame = Frame(PyRecorder) ###
+timer_frame.pack(side = TOP, fill = BOTH, expand = YES)
+
+# Create a timeText Label (a text box)
+timeText = Label(timer_frame, text="0", font=("Helvetica", 50))
+timeText.pack()
+
+#########################
 #      foot frame       #
 #########################
 foot_frame = Frame(PyRecorder) ###
@@ -400,14 +425,15 @@ foot_frame.pack(side = BOTTOM, fill = BOTH, expand = YES)
 author_frame = Frame(foot_frame, borderwidth = 0,  relief=  RIDGE, width = 200) 
 author_frame.pack(side = LEFT, fill = BOTH, expand = YES)  
 myMessage_author = "Author: Mengxue Cao"
-Label(author_frame, text = myMessage_author, justify = LEFT).pack(side = LEFT, anchor = W)
+author = Label(author_frame, text = myMessage_author, justify = LEFT)
+author.pack(side = BOTTOM, anchor = W)
 
 ### version_frame 
 version_frame = Frame(foot_frame, borderwidth = 0,  relief = RIDGE, width = 200)
 version_frame.pack(side = RIGHT,fill = BOTH, expand = YES)
 myMessage_version = "Version: 0.1"
-Label(version_frame, text = myMessage_version, justify = RIGHT).pack(side = RIGHT, anchor = W)
-
+version = Label(version_frame, text = myMessage_version, justify = RIGHT)
+version.pack(side = BOTTOM, anchor = E)
 
 ##################
 #                #
@@ -416,11 +442,17 @@ Label(version_frame, text = myMessage_version, justify = RIGHT).pack(side = RIGH
 ##################
 def main():    
     global state
+    global timer_state
     global save_buffer
     global script_count
     global wavefile
+    global timer
+    global pattern
+
+    timer = 0
 
     state = 0
+    timer_state = 0
     script_count = 0
     save_buffer = [] 
     wavefile = str(script_count + 1) + '.wav'
@@ -432,6 +464,7 @@ def main():
         button_play.configure(state = DISABLED)
 
     root.wm_title('PyRecorder')
+    update_timer()
     root.mainloop()
       
 if __name__ == "__main__":
