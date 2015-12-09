@@ -1,7 +1,7 @@
 #coding=utf-8  
 
 from __future__ import division  
-from pyaudio import PyAudio,paInt16
+from pyaudio import PyAudio, paInt16
 from Tkinter import *
 import wave
 import os
@@ -11,17 +11,15 @@ import os
 #    Declaration    #
 #                   #
 #####################   
-# default parameters
+# default parameters to be passed to setting window
 parameters = {'CHUNK':1024, 'FORMAT':16, 'RATE':44100, 'CHANNELS':1, 'WAV_PATH':'', 'SCRIPT_FILE':''}
 
-Dialog_MSG = 'Please enter seting parameters!'
 
-
-####################
-#                  #
-#    RED SCRIPT    #
-#                  #
-#################### 
+#####################
+#                   #
+#    READ SCRIPT    #
+#                   #
+#####################
 
 # read data from file
 def read_file(filename):
@@ -48,7 +46,7 @@ def record_wav():
         string_audio_data = stream_in.read(CHUNK)
         save_buffer.append(string_audio_data) 
 
-        # call the function once a millisecond
+        # call the function once per millisecond
         # this enables Tkinter to handel other button-click events while recording
         root.after(1, record_wav)
 
@@ -246,10 +244,10 @@ def button_quit_Click():
     root.destroy()
 
 def button_settings_Click():
-    Mbox(Dialog_MSG, parameters)    
+    Setting_window(parameters)    
 
 def button_about_Click():
-    root.destroy()        
+    About_window()         
 
 def maximise ():
     global window_width, window_height
@@ -349,11 +347,6 @@ button_play.configure(width = button_width, padx = button_padx, pady = button_pa
 button_play.configure(state = DISABLED)
 button_play.pack(side = LEFT)
 
-# quit button
-button_quit = Button(buttons_frame, command = button_quit_Click)
-button_quit.configure(text = "Quit", font = ("Helvetica", 15))
-button_quit.configure(width = button_width, padx = button_padx, pady = button_pady)
-button_quit.pack(side = LEFT)
 
 #########################
 #      echo frame      #
@@ -382,23 +375,66 @@ button_about.configure(text = "About", font = ("Helvetica", 15))
 button_about.configure(width = button_width, padx = button_padx, pady = button_pady)
 button_about.pack(side = RIGHT)
 
+# quit button
+button_quit = Button(foot_frame, command = button_quit_Click)
+button_quit.configure(text = "Quit", font = ("Helvetica", 15))
+button_quit.configure(width = button_width, padx = button_padx, pady = button_pady)
+button_quit.pack(side = LEFT)
 
-class Mbox(object):
+
+############################
+#     Dialog window for    #
+#     programme about   #
+############################
+class About_window(object):
     
     root = None
 
-    def __init__(self, msg, parameters):
-        """
-        msg = <str> the message to be displayed
-        dict_key = <sequence> (dictionary, key) to associate with user input
-        (providing a sequence for dict_key creates an entry for user input)        
-        """
+    def __init__(self):       
         
-        self.top = Toplevel(Mbox.root)
-        self.maximise()
+        self.top = Toplevel(About_window.root)
+        self.resize()     # resize the window
+        self.top.wm_title('About')
+
+        # disable inputs in the main window while setting window is open
+        self.top.grab_set()
+
+        #########################
+        #      text frame       #
+        #########################
+        text_frame = Frame(self.top)
+        text_frame.pack(expand = YES, fill = BOTH)
+
+        about = 'Welcome to PyRecorder!'
+        
+        message = Label(text_frame, text = about, font = ("Helvetica", 15), justify = LEFT)
+        message.pack(padx = 4, pady = 4, expand = YES, fill = BOTH)
+
+    def resize(self):
+        w, h = self.top.winfo_screenwidth(), self.top.winfo_screenheight()
+        window_width = w * 0.3
+        window_height = h * 0.4
+        left_blank = (w - window_width) / 2
+        top_blank = (h - window_height) / 2
+        self.top.geometry("%dx%d+%d+%d" % (window_width, window_height, left_blank, top_blank))
+
+
+
+############################
+#     Dialog window for    #
+#     programme settings   #
+############################
+class Setting_window(object):
+    
+    root = None
+
+    def __init__(self, parameters):       
+        
+        self.top = Toplevel(Setting_window.root)
+        self.resize()     # resize the window
         self.top.wm_title('Settings')
 
-        # disable inputs to the main window
+        # disable inputs in the main window while setting window is open
         self.top.grab_set() 
 
         #########################
@@ -406,18 +442,20 @@ class Mbox(object):
         #########################
         text_frame = Frame(self.top)
         text_frame.pack(expand = YES, fill = BOTH)
+
+        msg = 'Please enter seting parameters!'
         
         message = Label(text_frame, text = msg, font = ("Helvetica", 15), justify = LEFT)
         message.pack(padx = 4, pady = 4, expand = YES, fill = BOTH)
 
         ##########################
-        #      entry frame       #
+        #      setting frame       #
         ##########################
-        entry_frame = Frame(self.top)
-        entry_frame.pack(expand = YES, fill = X)        
+        setting_frame = Frame(self.top)
+        setting_frame.pack(expand = YES, fill = X)        
 
         # CHUNK
-        chunk_frame = Frame(entry_frame)
+        chunk_frame = Frame(setting_frame)
         chunk_frame.pack(expand = YES, fill = X) 
         
         text_CHUNK = Label(chunk_frame, text = "Frames per buffer:", font = ("Helvetica", 15), justify = LEFT)
@@ -425,14 +463,14 @@ class Mbox(object):
 
         v_chunk = IntVar()
         radiobutton_chunk_1 = Radiobutton(chunk_frame, text = "1024", variable = v_chunk, value = 1024)
-        radiobutton_chunk_1.pack(anchor = W, side = LEFT)
+        radiobutton_chunk_1.pack(side = LEFT)
 
         radiobutton_chunk_2 = Radiobutton(chunk_frame, text = "2048", variable = v_chunk, value = 2048)
-        radiobutton_chunk_2.pack(anchor = W, side = LEFT)
+        radiobutton_chunk_2.pack(side = LEFT)
         v_chunk.set(parameters['CHUNK'])
 
         # FORMAT
-        format_frame = Frame(entry_frame)
+        format_frame = Frame(setting_frame)
         format_frame.pack(expand = YES, fill = X)
 
         text_FORMAT = Label(format_frame, text = "Bit rate:", font = ("Helvetica", 15), justify = LEFT)
@@ -440,14 +478,11 @@ class Mbox(object):
 
         v_format = IntVar()
         radiobutton_format_1 = Radiobutton(format_frame, text = "16-bit", variable = v_format, value = 16)
-        radiobutton_format_1.pack(anchor = W, side = LEFT)
-
-        radiobutton_format_2 = Radiobutton(format_frame, text = "32-bit", variable = v_format, value = 32)
-        radiobutton_format_2.pack(anchor = W, side = LEFT)
+        radiobutton_format_1.pack(side = LEFT)
         v_format.set(parameters['FORMAT'])
 
         # RATE
-        rate_frame = Frame(entry_frame)
+        rate_frame = Frame(setting_frame)
         rate_frame.pack(expand = YES, fill = X)
 
         text_RATE = Label(rate_frame, text = "Sampling rate:", font = ("Helvetica", 15), justify = LEFT)
@@ -455,17 +490,17 @@ class Mbox(object):
 
         v_rate = IntVar()
         radiobutton_rate_1 = Radiobutton(rate_frame, text = "16 KHz", variable = v_rate, value = 16000)
-        radiobutton_rate_1.pack(anchor = W, side = LEFT)
+        radiobutton_rate_1.pack(side = LEFT)
 
         radiobutton_rate_2 = Radiobutton(rate_frame, text = "22.05 KHz", variable = v_rate, value = 22050)
-        radiobutton_rate_2.pack(anchor = W, side = LEFT)
+        radiobutton_rate_2.pack(side = LEFT)
 
         radiobutton_rate_3 = Radiobutton(rate_frame, text = "44.1 KHz", variable = v_rate, value = 44100)
-        radiobutton_rate_3.pack(anchor = W, side = LEFT)
+        radiobutton_rate_3.pack(side = LEFT)
         v_rate.set(parameters['RATE'])
 
         # CHANNELS
-        channels_frame = Frame(entry_frame)
+        channels_frame = Frame(setting_frame)
         channels_frame.pack(expand = YES, fill = X)
 
         text_CHANNELS = Label(channels_frame, text = "Number of recording channels:", font = ("Helvetica", 15), justify = LEFT)
@@ -473,14 +508,14 @@ class Mbox(object):
 
         v_channels = IntVar()
         radiobutton_channels_1 = Radiobutton(channels_frame, text = "1", variable = v_channels, value = 1)
-        radiobutton_channels_1.pack(anchor = W, side = LEFT)
+        radiobutton_channels_1.pack(side = LEFT)
 
         radiobutton_channels_2 = Radiobutton(channels_frame, text = "2", variable = v_channels, value = 2)
-        radiobutton_channels_2.pack(anchor = W, side = LEFT)
+        radiobutton_channels_2.pack(side = LEFT)
         v_channels.set(parameters['CHANNELS'])
 
         # WAV_PATH
-        wav_path_frame = Frame(entry_frame)
+        wav_path_frame = Frame(setting_frame)
         wav_path_frame.pack(expand = YES, fill = X)
 
         text_WAV_PATH = Label(wav_path_frame, text = "Saving path:", font = ("Helvetica", 15), justify = LEFT)
@@ -491,7 +526,7 @@ class Mbox(object):
         entry_WAV_PATH.insert(0, parameters['WAV_PATH'])
 
         # SCRIPT_FILE
-        script_file_frame = Frame(entry_frame)
+        script_file_frame = Frame(setting_frame)
         script_file_frame.pack(expand = YES, fill = X)
 
         text_SCRIPT_FILE = Label(script_file_frame, text = "Recording script file:", font = ("Helvetica", 15), justify = LEFT)
@@ -509,54 +544,58 @@ class Mbox(object):
         button_frame = Frame(self.top)
         button_frame.pack(expand = YES, fill = BOTH)
 
-        b_submit = Button(button_frame, text = 'Submit')
-        b_submit['command'] = lambda: self.submit(enteries)
-        b_submit.pack(side = RIGHT)               
+        button_submit = Button(button_frame, text = 'Submit')
+        button_submit['command'] = lambda: self.submit(enteries)
+        button_submit.pack(side = RIGHT)               
 
-        b_cancel = Button(button_frame, text = 'Cancel')
-        b_cancel['command'] = self.top.destroy
-        b_cancel.pack(side = RIGHT)
+        button_cancel = Button(button_frame, text = 'Cancel')
+        button_cancel['command'] = self.top.destroy
+        button_cancel.pack(side = RIGHT)
 
-    def submit(self, enteries):        
-        p_CHUNK = enteries[0].get()        # frames per buffer
-        p_FORMAT = enteries[1].get()    # bit rate: 16-bit use "paInt16", 32-bit use "paInt32"
-        p_RATE = enteries[2].get()        # sampling rate
-        p_CHANNELS = enteries[3].get()        # number of recording channels
-        p_WAV_PATH = enteries[4].get()   # saving path for wave files
-        p_SCRIPT_FILE = enteries[5].get()    # file of recording script
+    def submit(self, enteries):
+        
+        # get parameter values from settings
+        p_CHUNK = enteries[0].get()         # frames per buffer
+        p_FORMAT = enteries[1].get()        # bit rate: 16-bit use "paInt16", 32-bit use "paInt32"
+        p_RATE = enteries[2].get()          # sampling rate
+        p_CHANNELS = enteries[3].get()      # number of recording channels
+        p_WAV_PATH = enteries[4].get()      # saving path for wave files
+        p_SCRIPT_FILE = enteries[5].get()   # file of recording script
 
+        # close seeting window
+        self.top.destroy()
+
+        # check wav path and script file
         if p_WAV_PATH == '':
             echo_text.configure(text = "Please set \"Saving path\"!\n", bg = 'white', fg = 'red', font = ("Helvetica", 20))
-            self.top.destroy()
 
         elif p_SCRIPT_FILE == '':
             echo_text.configure(text = "Please set \"Recording script file\"!\n", bg = 'white', fg = 'red', font = ("Helvetica", 20))
-            self.top.destroy()
 
         elif not os.path.exists(p_WAV_PATH):
             echo_text.configure(text = "Saving path does not exist!\n", bg = 'white', fg = 'red', font = ("Helvetica", 20))
-            self.top.destroy()            
        
         elif not os.path.isfile(p_SCRIPT_FILE):
             echo_text.configure(text = "Recording script file does not exist!\n", bg = 'white', fg = 'red', font = ("Helvetica", 20))
-            self.top.destroy()
 
         else:
+            # pass parameter value to global parameter record
             parameters['CHUNK'] = p_CHUNK
             parameters['FORMAT'] = p_FORMAT
             parameters['RATE'] = p_RATE
             parameters['CHANNELS'] = p_CHANNELS                    
             parameters['SCRIPT_FILE'] = p_SCRIPT_FILE
             
+            # fix wav path
             if p_WAV_PATH[-1] != '/':
                 parameters['WAV_PATH'] = p_WAV_PATH + '/'
             else:
                 parameters['WAV_PATH'] = p_WAV_PATH
 
-            self.top.destroy()
-
+            # set echo window to default
             echo_text.configure(text = "Stopped", bg = 'white', fg = 'black', font = ("Helvetica", 50))
 
+            # set parameters into correct formart, and pass them to global values
             self.get_parameters(parameters)
 
             global wavefile, script_list
@@ -569,9 +608,12 @@ class Mbox(object):
             else:
                 button_play.configure(state = DISABLED)
 
-            
+            # read in script list
             script_list = read_file(SCRIPT_FILE)
+            # print script in the recording script window
             script_line.set(script_list[script_count])
+
+            # update button states
             button_record.configure(state = NORMAL)
             button_next.configure(state = NORMAL)
 
@@ -587,10 +629,8 @@ class Mbox(object):
 
         if parameters['FORMAT'] == 16:
             FORMAT = paInt16
-        elif parameters['FORMAT'] == 32:
-            FORMAT = paInt32
 
-    def maximise(self):
+    def resize(self):
         w, h = self.top.winfo_screenwidth(), self.top.winfo_screenheight()
         window_width = w * 0.3
         window_height = h * 0.4
@@ -612,7 +652,8 @@ def main():
     save_buffer = []
 
     root.wm_title('PyRecorder')
-    Mbox.root = root
+    Setting_window.root = root
+    About_window.root = root
     root.mainloop()
       
 if __name__ == "__main__":
