@@ -418,7 +418,7 @@ class About_window(object):
         message_version = Label(text_frame, text = m_version, font = ("Papyrus", 20), justify = LEFT, fg = 'RoyalBlue')
         message_version.pack(side = TOP, padx = 4, pady = 4, expand = YES, fill = BOTH)
 
-        m_url = 'github.com/'
+        m_url = 'https://github.com/smilett/PyRecorder'
         message_url = Label(text_frame, text = m_url, font = ("Helvetica", 15), justify = LEFT, fg = 'black')
         message_url.pack(side = TOP, padx = 4, pady = 4, expand = YES, fill = BOTH)
 
