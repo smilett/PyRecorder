@@ -1,15 +1,15 @@
 # _PyRecorder_
 
-* By Mengxue Cao
+*** By Mengxue Cao ***
 
 PyRecorder is a sound recorder written in Python. The audio module is based on PyAduio.
 The GUI is based on Tkinter. The goal of this programme is to help phoneticians do easy redording.
 
 ## Features
 
-* set recording parameters like sampling rate, recording channels, bit rate etc.
-* able to do continuously recording by reading in a prepared script file.
-* dynamically set the format of sound file name based on number of sentences to be recorded
+1. set recording parameters like sampling rate, recording channels, bit rate etc.
+2. able to do continuously recording by reading in a prepared script file.
+3. dynamically set the format of sound file name based on number of sentences to be recorded
 	* if the number of sentences is in (0, 10), use 1.wav, 2.wav ...
 	* if the number of sentences is in [10, 100), use 01.wav, 02.wav ...
 	* if the number of sentences is in [100, 1000), use 001.wav, 002.wav ...
@@ -32,7 +32,7 @@ To run the programme, PyAudio and Tkinter are required
 
 ## History
 
-version 1.0 published
+2015-12-10 version 1.0 published
 
 ## License
 
