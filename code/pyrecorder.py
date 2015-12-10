@@ -6,7 +6,7 @@ PyRecorder is a sound recorder written in Python.
 The audio module is based on PyAduio.
 The GUI is based on Tkinter.
 
-The goal of this programme is to help phoneticians do easy redording.
+The goal of this programme is to help phoneticians do easy recording.
 
 """
 from __future__ import division  
@@ -419,7 +419,7 @@ class About_window(object):
         message_name = Label(text_frame, text = m_name, font = ("Papyrus", 30, "bold"), justify = LEFT, fg = 'RoyalBlue')
         message_name.pack(side = TOP, padx = 4, pady = 4, expand = YES, fill = BOTH)
 
-        m_intro = 'helps phoneticians do easy redording'
+        m_intro = 'helps phoneticians do easy recording'
         message_intro = Label(text_frame, text = m_intro, font = ("Papyrus", 20), justify = LEFT, fg = 'RoyalBlue')
         message_intro.pack(side = TOP, padx = 4, pady = 4, expand = YES, fill = BOTH)
 

@@ -2,5 +2,5 @@ Welcome to PyRecorder!
 It is a sound recorder written in Python
 The audio module is based on PyAduio
 The GUI is based on Tkinter
-It helps phoneticians do easy redording
+It helps phoneticians do easy recording
 Enjoy!

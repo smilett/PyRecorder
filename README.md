@@ -3,7 +3,7 @@
 **_by Mengxue Cao_**
 
 PyRecorder is a voice recorder written in Python. The audio module is based on [PyAudio] (http://people.csail.mit.edu/hubert/pyaudio/).
-The GUI is based on [Tkinter] (https://wiki.python.org/moin/TkInter). The goal of this programme is to help phoneticians do easy redording.
+The GUI is based on [Tkinter] (https://wiki.python.org/moin/TkInter). The goal of this programme is to help phoneticians do easy recording.
 
 ## Features
 
