@@ -41,7 +41,7 @@ However, the code should be able to run on other platforms such as Linux and Win
 
 ## Known issues
 
-When doing recording or playing, a warning will shown up in the command line, shown `the application is using the deprecated Carbon Component Manager for hosting Audio Units`. This is probably a problem of PyAudio, but it does not affect the programme performance at the moment.
+When doing recording or playing, a warning will shown up in the command line, shown `the application is using the deprecated Carbon Component Manager for hosting Audio Units`. This is probably a problem of EI Capitan, but it does not affect the programme performance at the moment.
 
 ## History
 
