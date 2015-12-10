@@ -120,7 +120,7 @@ def button_record_Click():
 
 
 def button_play_Click():
-    global state, wav_out, stream_out, data_out, wave_form, wavefile, script_count, script_list
+    global state, wav_out, stream_out, data_out, wave_form, wavefile_name, script_count, script_list
 
     state = 2   # change the state flag into "playing"
 
@@ -131,7 +131,7 @@ def button_play_Click():
     button_next.configure(state = DISABLED)
 
     wav_out = PyAudio()
-    wave_form = wave.open(WAV_PATH + wavefile, 'rb')
+    wave_form = wave.open(wavefile_name, 'rb')
     stream_out = wav_out.open(format = wav_out.get_format_from_width(wave_form.getsampwidth()),
                 channels = wave_form.getnchannels(),
                 rate = wave_form.getframerate(),
@@ -142,14 +142,14 @@ def button_play_Click():
     play_wave()
    
 def button_stop_Click():
-    global state, save_buffer, wav_in, wav_out, stream_in, stream_out, data_out, wavefile, script_count, script_list
+    global state, save_buffer, wav_in, wav_out, stream_in, stream_out, data_out, wavefile_name, script_count, script_list
 
     echo_text.configure(text = "Stopped", bg = 'white', fg = 'black', font = ("Helvetica", 50))
 
     # stop from recording
     if state == 1:
         state = 0   # change the state flag into "stopped"
-        save_wave_file(WAV_PATH + wavefile, save_buffer, sampwidth)
+        save_wave_file(wavefile_name, save_buffer, sampwidth)
 
         # clean up
         save_buffer = []
@@ -187,16 +187,16 @@ def button_stop_Click():
 
 
 def button_back_Click():
-    global script_count, script_list, script_line, wavefile, WAV_PATH
+    global script_count, script_list, script_line, filename_format, wavefile_name, WAV_PATH
 
     if script_count > 1:        
         script_count = script_count - 1
         script_line.set(script_list[script_count])
-        wavefile = str(script_count + 1) + '.wav'
+        wavefile_name = filename_format.format(WAV_PATH, script_count + 1, '.wav')
         button_next.configure(state = NORMAL)
 
         # if file exists, enable play button
-        if os.path.isfile(WAV_PATH + wavefile):
+        if os.path.isfile(wavefile_name):
             button_play.configure(state = NORMAL)
         else:
             button_play.configure(state = DISABLED)
@@ -204,23 +204,23 @@ def button_back_Click():
     elif script_count == 1:        
         script_count = script_count - 1
         script_line.set(script_list[script_count])
-        wavefile = str(script_count + 1) + '.wav'
+        wavefile_name = filename_format.format(WAV_PATH, script_count + 1, '.wav')
 
         # update button states
         button_back.configure(state = DISABLED)
         button_next.configure(state = NORMAL)
 
 def button_next_Click():
-    global script_count, script_list, script_line, wavefile, WAV_PATH
+    global script_count, script_list, script_line, filename_format, wavefile_name, WAV_PATH
 
     if script_count < len(script_list) - 2:        
         script_count = script_count + 1
         script_line.set(script_list[script_count])
-        wavefile = str(script_count + 1) + '.wav'
+        wavefile_name = filename_format.format(WAV_PATH, script_count + 1, '.wav')
         button_back.configure(state = NORMAL)
 
         # if file exists, enable play button
-        if os.path.isfile(WAV_PATH + wavefile):
+        if os.path.isfile(wavefile_name):
             button_play.configure(state = NORMAL)
         else:
             button_play.configure(state = DISABLED)
@@ -228,14 +228,14 @@ def button_next_Click():
     elif script_count == len(script_list) - 2:        
         script_count = script_count + 1
         script_line.set(script_list[script_count])
-        wavefile = str(script_count + 1) + '.wav'
+        wavefile_name = filename_format.format(WAV_PATH, script_count + 1, '.wav')
 
         # update button states
         button_back.configure(state = NORMAL)
         button_next.configure(state = DISABLED)
 
         # if file exists, enable play button
-        if os.path.isfile(WAV_PATH + wavefile):
+        if os.path.isfile(wavefile_name):
             button_play.configure(state = NORMAL)
         else:
             button_play.configure(state = DISABLED)
@@ -352,7 +352,7 @@ button_play.pack(side = LEFT)
 #      echo frame      #
 #########################
 welcome_message = "Please define the saving path and locate the recording script file\n by clicking the \"Settings\" button below!"
-echo_frame = Frame(PyRecorder) ###
+echo_frame = Frame(PyRecorder)
 echo_frame.pack(side = TOP, fill = BOTH, expand = YES)
 echo_text = Label(echo_frame, text = welcome_message, font=("Helvetica", 20), fg = 'blue')
 echo_text.pack(fill = BOTH, expand = YES)
@@ -360,8 +360,8 @@ echo_text.pack(fill = BOTH, expand = YES)
 #########################
 #      foot frame       #
 #########################
-foot_frame = Frame(PyRecorder) ###
-foot_frame.pack(side = BOTTOM, fill = BOTH, expand = YES)
+foot_frame = Frame(PyRecorder)
+foot_frame.pack(side = BOTTOM, fill = BOTH, expand = YES, ipadx = buttons_frame_ipadx, padx = buttons_frame_padx)
         
 # settings button
 button_settings = Button(foot_frame, command = button_settings_Click)
@@ -369,17 +369,17 @@ button_settings.configure(text = "Settings", font = ("Helvetica", 15))
 button_settings.configure(width = button_width, padx = button_padx, pady = button_pady)
 button_settings.pack(side = RIGHT)
 
-# about button
-button_about = Button(foot_frame, command = button_about_Click)
-button_about.configure(text = "About", font = ("Helvetica", 15))
-button_about.configure(width = button_width, padx = button_padx, pady = button_pady)
-button_about.pack(side = RIGHT)
-
 # quit button
 button_quit = Button(foot_frame, command = button_quit_Click)
 button_quit.configure(text = "Quit", font = ("Helvetica", 15))
 button_quit.configure(width = button_width, padx = button_padx, pady = button_pady)
-button_quit.pack(side = LEFT)
+button_quit.pack(side = RIGHT)
+
+# about button
+button_about = Button(foot_frame, command = button_about_Click)
+button_about.configure(text = "About", font = ("Helvetica", 15))
+button_about.configure(width = button_width, padx = button_padx, pady = button_pady)
+button_about.pack(side = LEFT)
 
 
 ############################
@@ -598,18 +598,30 @@ class Setting_window(object):
             # set parameters into correct formart, and pass them to global values
             self.get_parameters(parameters)
 
-            global wavefile, script_list
-
-            wavefile = str(script_count + 1) + '.wav'
-
-            # if file exists, enable play button
-            if os.path.isfile(WAV_PATH + wavefile):
-                button_play.configure(state = NORMAL)
-            else:
-                button_play.configure(state = DISABLED)
+            global wavefile_name, script_list, filename_format
 
             # read in script list
             script_list = read_file(SCRIPT_FILE)
+
+            # define wavefile name
+            
+            if len(script_list) >= 10:
+                filename_format = '{0:s}{1:02d}{2:s}'                
+
+            elif len(script_list) >= 100:
+                filename_format = '{0:s}{1:03d}{2:s}'
+
+            elif len(script_list) >= 1000:
+                filename_format = '{0:s}{1:04d}{2:s}'
+
+            wavefile_name = filename_format.format(WAV_PATH, script_count + 1, '.wav')
+
+            # if file exists, enable play button
+            if os.path.isfile(wavefile_name):
+                button_play.configure(state = NORMAL)
+            else:
+                button_play.configure(state = DISABLED)
+            
             # print script in the recording script window
             script_line.set(script_list[script_count])
 
@@ -645,7 +657,7 @@ class Setting_window(object):
 #                #
 ##################
 def main():    
-    global state, save_buffer, script_count, wavefile
+    global state, save_buffer, script_count
 
     state = 0
     script_count = 0
