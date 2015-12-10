@@ -20,11 +20,11 @@ The GUI is based on [Tkinter] (https://wiki.python.org/moin/TkInter). The goal o
 ## Required dependencies
 
 The code is written in Python 2. To run the programme, PyAudio and Tkinter are required.
-* PyAudio provides Python bindings for PortAudio, the cross-platform audio I/O library.
+* PyAudio provides Python bindings for PortAudio.
 	* see [PyAudio] (http://people.csail.mit.edu/hubert/pyaudio/) home page for installation guids and more information.
-* Tkinter is Python's de-facto standard GUI (Graphical User Interface) package.
+* Tkinter is Python's de-facto standard GUI package.
 	* see [Tkinter] (https://wiki.python.org/moin/TkInter) wiki page for more information.
-	* also see [effbot.org] (http://effbot.org/tkinterbook/) Tkinter tutorial site.
+	* also see a [Tkinter tutorial] (http://effbot.org/tkinterbook/) from effbot.org.
 
 ## Usage
 
@@ -41,7 +41,7 @@ However, the code should be able to run on other platforms such as Linux and Win
 
 ## Known issues
 
-When doing recording or playing, a warning will shown up in the command line, shown "_the application is using the deprecated Carbon Component Manager for hosting Audio Units_". This is probably a problem of PyAudio, but it does not affect the programme performance at the moment.
+When doing recording or playing, a warning will shown up in the command line, shown `the application is using the deprecated Carbon Component Manager for hosting Audio Units`. This is probably a problem of PyAudio, but it does not affect the programme performance at the moment.
 
 ## History
 
