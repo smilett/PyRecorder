@@ -7,13 +7,15 @@ The GUI is based on [Tkinter] (https://wiki.python.org/moin/TkInter). The goal o
 
 ## Features
 
-1. set recording parameters like sampling rate, recording channels, bit rate etc.
-2. able to do continuously recording by reading in a prepared script file.
-3. dynamically set the format of sound file name based on number of sentences to be recorded (require python 2.6 or higher).
+1. Set recording parameters like sampling rate, recording channels, bit rate etc.
+2. Do continuously recording by reading in a prepared script file.
+3. Dynamically set the format of sound file name based on number of sentences to be recorded (require python 2.6 or higher).
 	* if the number of sentences is in (0, 10), use 1.wav, 2.wav ...
 	* if the number of sentences is in [10, 100), use 01.wav, 02.wav ...
 	* if the number of sentences is in [100, 1000), use 001.wav, 002.wav ...
 	* ...
+4. Play back recordings.
+5. Jump between recording items.
 
 ## Environment Requirements
 
@@ -31,11 +33,11 @@ However, the code should be able to run on other platforms such as Linux and Win
 
 ## Usage
 
-1. prepare a file contains recording scripts. In the file, each line should only contain one sentences (or words). 
-2. run the code with "python PyRecorder.py".
-3. set parameters by clicking the "Setting" button.
-4. click "Record" to start recording, and click "Stop" to stop.
-5. click "Play" to play back.
+1. Prepare a file contains recording scripts. In the file, each line should only contain one sentences (or words). 
+2. Run the code with "python PyRecorder.py".
+3. Set parameters by clicking the "Setting" button.
+4. Click "Record" to start recording, and click "Stop" to stop.
+5. Click "Play" to play back.
 
 ## History
 
