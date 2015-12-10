@@ -1,6 +1,6 @@
 # _PyRecorder_
 
-*** By Mengxue Cao ***
+** By Mengxue Cao **
 
 PyRecorder is a sound recorder written in Python. The audio module is based on PyAduio.
 The GUI is based on Tkinter. The goal of this programme is to help phoneticians do easy redording.
