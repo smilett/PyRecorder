@@ -324,28 +324,28 @@ button_next = Button(buttons_frame, command = button_next_Click)
 button_next.configure(text = "Next", font = ("Helvetica", 15))
 button_next.configure(width = button_width, padx = button_padx, pady = button_pady)
 button_next.configure(state = DISABLED)
-button_next.pack(side = LEFT)
+button_next.pack(side = LEFT, padx = 4)
 
 # record button
 button_record = Button(buttons_frame, command = button_record_Click)
 button_record.configure(text = "Record", font = ("Helvetica", 15))
 button_record.configure(width = button_width, padx = button_padx, pady = button_pady)
 button_record.configure(state = DISABLED)
-button_record.pack(side = LEFT)
+button_record.pack(side = LEFT, padx = 4)
 
 # stop button
 button_stop = Button(buttons_frame, command = button_stop_Click)
 button_stop.configure(text = "Stop", font = ("Helvetica", 15))  
 button_stop.configure(width = button_width, padx = button_padx, pady = button_pady)
 button_stop.configure(state = DISABLED) 
-button_stop.pack(side = LEFT)
+button_stop.pack(side = LEFT, padx = 4)
         
 # play button
 button_play = Button(buttons_frame, command = button_play_Click)
 button_play.configure(text = "Play", font = ("Helvetica", 15))  
 button_play.configure(width = button_width, padx = button_padx, pady = button_pady)
 button_play.configure(state = DISABLED)
-button_play.pack(side = LEFT)
+button_play.pack(side = LEFT, padx = 4)
 
 
 #########################
@@ -373,7 +373,7 @@ button_settings.pack(side = RIGHT)
 button_quit = Button(foot_frame, command = button_quit_Click)
 button_quit.configure(text = "Quit", font = ("Helvetica", 15))
 button_quit.configure(width = button_width, padx = button_padx, pady = button_pady)
-button_quit.pack(side = RIGHT)
+button_quit.pack(side = RIGHT, padx = 4)
 
 # about button
 button_about = Button(foot_frame, command = button_about_Click)
@@ -441,7 +441,7 @@ class Setting_window(object):
         #      text frame       #
         #########################
         text_frame = Frame(self.top)
-        text_frame.pack(expand = YES, fill = BOTH)
+        text_frame.pack(expand = YES, fill = BOTH, ipadx = 10, padx = 10)
 
         msg = 'Please enter seting parameters!'
         
@@ -452,7 +452,7 @@ class Setting_window(object):
         #      setting frame       #
         ##########################
         setting_frame = Frame(self.top)
-        setting_frame.pack(expand = YES, fill = X)        
+        setting_frame.pack(expand = YES, fill = X, ipadx = 10, padx = 10)
 
         # CHUNK
         chunk_frame = Frame(setting_frame)
@@ -530,7 +530,7 @@ class Setting_window(object):
         script_file_frame.pack(expand = YES, fill = X)
 
         text_SCRIPT_FILE = Label(script_file_frame, text = "Recording script file:", font = ("Helvetica", 15), justify = LEFT)
-        text_SCRIPT_FILE.pack(side = LEFT,padx = 4, pady = 4)
+        text_SCRIPT_FILE.pack(side = LEFT, padx = 4, pady = 4)
 
         entry_SCRIPT_FILE = Entry(script_file_frame)
         entry_SCRIPT_FILE.pack(side = LEFT, padx = 4, pady = 4, expand = YES, fill = BOTH)
@@ -542,15 +542,15 @@ class Setting_window(object):
         #      button frame       #
         ###########################
         button_frame = Frame(self.top)
-        button_frame.pack(expand = YES, fill = BOTH)
+        button_frame.pack(expand = YES, fill = BOTH, ipadx = 10, padx = 10)
 
         button_submit = Button(button_frame, text = 'Submit')
         button_submit['command'] = lambda: self.submit(enteries)
-        button_submit.pack(side = RIGHT)               
+        button_submit.pack(side = RIGHT, padx = 4)               
 
         button_cancel = Button(button_frame, text = 'Cancel')
         button_cancel['command'] = self.top.destroy
-        button_cancel.pack(side = RIGHT)
+        button_cancel.pack(side = RIGHT, padx = 4)
 
     def submit(self, enteries):
         
