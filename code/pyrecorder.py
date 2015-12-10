@@ -410,7 +410,7 @@ class About_window(object):
         message_name = Label(text_frame, text = m_name, font = ("Papyrus", 30, "bold"), justify = LEFT, fg = 'RoyalBlue')
         message_name.pack(side = TOP, padx = 4, pady = 4, expand = YES, fill = BOTH)
 
-        m_intro = 'record sounds with Python'
+        m_intro = 'helps phonetics do easy redording'
         message_intro = Label(text_frame, text = m_intro, font = ("Papyrus", 20), justify = LEFT, fg = 'RoyalBlue')
         message_intro.pack(side = TOP, padx = 4, pady = 4, expand = YES, fill = BOTH)
 
@@ -630,6 +630,8 @@ class Setting_window(object):
 
             elif len(script_list) >= 1000 and len(script_list) < 10000:
                 filename_format = '{0:s}{1:04d}{2:s}'
+            else:
+                filename_format = '{0:s}{1:d}{2:s}'
 
             wavefile_name = filename_format.format(WAV_PATH, script_count + 1, '.wav')
 
