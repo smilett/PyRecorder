@@ -614,8 +614,8 @@ class Setting_window(object):
             parameters['SCRIPT_FILE'] = p_SCRIPT_FILE
             
             # fix wav path
-            if p_WAV_PATH[-1] != '/':
-                parameters['WAV_PATH'] = p_WAV_PATH + '/'
+            if p_WAV_PATH[-1] != os.path.sep:
+                parameters['WAV_PATH'] = p_WAV_PATH + os.path.sep
             else:
                 parameters['WAV_PATH'] = p_WAV_PATH
 
