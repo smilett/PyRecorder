@@ -18,18 +18,10 @@ The GUI is based on Tkinter. The goal of this programme is to help phoneticians 
 3. set parameters by clicking the "Setting" button.
 4. enjoy recording.
 
-## Contributing
-
-1. Fork it!
-2. Create your feature branch: `git checkout -b my-new-feature`
-3. Commit your changes: `git commit -am 'Add some feature'`
-4. Push to the branch: `git push origin my-new-feature`
-5. Submit a pull request :D
-
 ## History
 
 version 1.0 published
 
 ## License
 
-see https://github.com/smilett/PyRecorder/blob/master/LICENSE
+see [LICENSE]https://github.com/smilett/PyRecorder/blob/master/LICENSE
