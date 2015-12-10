@@ -7,23 +7,24 @@ The GUI is based on [Tkinter] (https://wiki.python.org/moin/TkInter). The goal o
 
 ## Features
 
-1. Set recording parameters like sampling rate, recording channels, bit rate etc.
-2. Do continuously recording by reading in a prepared script file.
-3. Dynamically set the format of sound file name based on number of sentences to be recorded (require python 2.6 or higher).
+1. Set recording parameters such as sampling rate, recording channels, bit rate etc.
+2. Do series recording by reading in a prepared script file.
+3. Play back recordings.
+4. Jump between recording items.
+5. Dynamically set the format of sound file name based on number of sentences to be recorded (require python 2.6 or higher).
 	* if the number of sentences is in (0, 10), use 1.wav, 2.wav ...
 	* if the number of sentences is in [10, 100), use 01.wav, 02.wav ...
 	* if the number of sentences is in [100, 1000), use 001.wav, 002.wav ...
 	* ...
-4. Play back recordings.
-5. Jump between recording items.
 
-## Environment Requirements
+## Required dependencies
 
-To run the programme, PyAudio and Tkinter are required
+The code is written in Python 2. To run the programme, PyAudio and Tkinter are required.
 * PyAudio provides Python bindings for PortAudio, the cross-platform audio I/O library.
 	* see [PyAudio] (http://people.csail.mit.edu/hubert/pyaudio/) home page for installation guids and more information.
 * Tkinter is Python's de-facto standard GUI (Graphical User Interface) package.
 	* see [Tkinter] (https://wiki.python.org/moin/TkInter) wiki page for more information.
+	* also see [effbot.org] (http://effbot.org/tkinterbook/) Tkinter tutorial site.
 
 ## Compatibility
 
@@ -38,6 +39,10 @@ However, the code should be able to run on other platforms such as Linux and Win
 3. Set parameters by clicking the "Setting" button.
 4. Click "Record" to start recording, and click "Stop" to stop.
 5. Click "Play" to play back.
+
+## Known issues
+
+When doing recording or playing, a warning will shown up in the command line, shown "_the application is using the deprecated Carbon Component Manager for hosting Audio Units_". This is probably a problem of PyAudio, but it does not affect the programme performance at the moment.
 
 ## History
 
