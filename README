@@ -1,5 +1,8 @@
 PyRecorder v 1.0
+========
 By Mengxue Cao
+Helps phoneticians do easy redording
+
 
 1) INRODUCTION
 	PyRecorder is a sound recorder written in Python. The audio module is based on PyAduio.
