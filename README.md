@@ -33,6 +33,7 @@ The code is written in Python 2. To run the programme, PyAudio and Tkinter are r
 3. Set parameters by clicking the "Setting" button.
 4. Click "Record" to start recording, and click "Stop" to stop.
 5. Click "Play" to play back.
+6. Click "Back" and "Next" to navigate.
 
 ## Compatibility
 
