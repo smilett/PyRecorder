@@ -405,10 +405,26 @@ class About_window(object):
         text_frame = Frame(self.top)
         text_frame.pack(expand = YES, fill = BOTH)
 
-        about = 'Welcome to PyRecorder!'
+        m_name = 'PyRecorder'
         
-        message = Label(text_frame, text = about, font = ("Helvetica", 15), justify = LEFT)
-        message.pack(padx = 4, pady = 4, expand = YES, fill = BOTH)
+        message_name = Label(text_frame, text = m_name, font = ("Papyrus", 30, "bold"), justify = LEFT, fg = 'RoyalBlue')
+        message_name.pack(side = TOP, padx = 4, pady = 4, expand = YES, fill = BOTH)
+
+        m_intro = 'record sounds with Python'
+        message_intro = Label(text_frame, text = m_intro, font = ("Papyrus", 20), justify = LEFT, fg = 'RoyalBlue')
+        message_intro.pack(side = TOP, padx = 4, pady = 4, expand = YES, fill = BOTH)
+
+        m_version = 'version 1.0'
+        message_version = Label(text_frame, text = m_version, font = ("Papyrus", 20), justify = LEFT, fg = 'RoyalBlue')
+        message_version.pack(side = TOP, padx = 4, pady = 4, expand = YES, fill = BOTH)
+
+        m_url = 'github.com/'
+        message_url = Label(text_frame, text = m_url, font = ("Helvetica", 15), justify = LEFT, fg = 'black')
+        message_url.pack(side = TOP, padx = 4, pady = 4, expand = YES, fill = BOTH)
+
+        m_author = 'Created by Mengxue Cao'
+        message_author = Label(text_frame, text = m_author, font = ("Helvetica", 15), justify = LEFT, fg = 'black')
+        message_author.pack(side = TOP, padx = 4, pady = 4, expand = YES, fill = BOTH)
 
     def resize(self):
         w, h = self.top.winfo_screenwidth(), self.top.winfo_screenheight()
@@ -435,7 +451,7 @@ class Setting_window(object):
         self.top.wm_title('Settings')
 
         # disable inputs in the main window while setting window is open
-        self.top.grab_set() 
+        self.top.grab_set()         
 
         #########################
         #      text frame       #
@@ -446,7 +462,7 @@ class Setting_window(object):
         msg = 'Please enter seting parameters!'
         
         message = Label(text_frame, text = msg, font = ("Helvetica", 15), justify = LEFT)
-        message.pack(padx = 4, pady = 4, expand = YES, fill = BOTH)
+        message.pack(side = TOP, padx = 4, pady = 4, expand = YES, fill = BOTH)
 
         ##########################
         #      setting frame       #
@@ -538,15 +554,17 @@ class Setting_window(object):
 
         enteries = [v_chunk, v_format, v_rate, v_channels, entry_WAV_PATH, entry_SCRIPT_FILE]
 
+
+
         ###########################
         #      button frame       #
         ###########################
         button_frame = Frame(self.top)
         button_frame.pack(expand = YES, fill = BOTH, ipadx = 10, padx = 10)
-
+        
         button_submit = Button(button_frame, text = 'Submit')
         button_submit['command'] = lambda: self.submit(enteries)
-        button_submit.pack(side = RIGHT, padx = 4)               
+        button_submit.pack(side = RIGHT, padx = 4)    
 
         button_cancel = Button(button_frame, text = 'Cancel')
         button_cancel['command'] = self.top.destroy
@@ -643,7 +661,7 @@ class Setting_window(object):
 
     def resize(self):
         w, h = self.top.winfo_screenwidth(), self.top.winfo_screenheight()
-        window_width = w * 0.3
+        window_width = w * 0.4
         window_height = h * 0.4
         left_blank = (w - window_width) / 2
         top_blank = (h - window_height) / 2
