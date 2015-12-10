@@ -1,14 +1,22 @@
-# Project Name
+# PyRecorder v 1.0
 
-TODO: Write a project description
+By Mengxue Cao
 
-## Installation
+PyRecorder is a sound recorder written in Python. The audio module is based on PyAduio.
+The GUI is based on Tkinter. The goal of this programme is to help phoneticians do easy redording.
 
-TODO: Describe the installation process
+## Features
+
+1. set parameters like sampling rate, recording channels, etc.
+2. do continuously recording by reading in a prepared script file.
+3. dynamically set the format of file name (i.e. 1.wav, 01.wav, or 001.wav).
 
 ## Usage
 
-TODO: Write usage instructions
+1. prepare a file contains recording scripts. In the file, each line should only contain one sentences (or words). 
+2. run the code with "Python PyRecorder.py".
+3. set parameters by clicking the "Setting" button.
+4. enjoy recording.
 
 ## Contributing
 
@@ -20,12 +28,8 @@ TODO: Write usage instructions
 
 ## History
 
-TODO: Write history
-
-## Credits
-
-TODO: Write credits
+version 1.0 published
 
 ## License
 
-TODO: Write license
+see https://github.com/smilett/PyRecorder/blob/master/LICENSE
