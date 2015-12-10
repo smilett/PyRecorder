@@ -26,12 +26,6 @@ The code is written in Python 2. To run the programme, PyAudio and Tkinter are r
 	* see [Tkinter] (https://wiki.python.org/moin/TkInter) wiki page for more information.
 	* also see [effbot.org] (http://effbot.org/tkinterbook/) Tkinter tutorial site.
 
-## Compatibility
-
-The programme is, by now, only tested under OS X EI Capitan (10.11.2) with python 2.7.11.
-However, the code should be able to run on other platforms such as Linux and Windows, based on the cross-platform compabiity of python.
-
-
 ## Usage
 
 1. Prepare a file contains recording scripts. In the file, each line should only contain one sentences (or words). 
@@ -39,6 +33,11 @@ However, the code should be able to run on other platforms such as Linux and Win
 3. Set parameters by clicking the "Setting" button.
 4. Click "Record" to start recording, and click "Stop" to stop.
 5. Click "Play" to play back.
+
+## Compatibility
+
+The programme is, by now, only tested under OS X EI Capitan (10.11.2) with python 2.7.11.
+However, the code should be able to run on other platforms such as Linux and Windows, based on the cross-platform compabiity of python.
 
 ## Known issues
 
