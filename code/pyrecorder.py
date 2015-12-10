@@ -1,5 +1,14 @@
-#coding=utf-8  
+# -*- coding: utf-8 -*-
+"""
+Copyright © 2015 by Mengxue Cao
 
+PyRecorder is a sound recorder written in Python.
+The audio module is based on PyAduio.
+The GUI is based on Tkinter.
+
+The goal of this programme is to help phoneticians do easy redording.
+
+"""
 from __future__ import division  
 from pyaudio import PyAudio, paInt16
 from Tkinter import *
@@ -422,7 +431,7 @@ class About_window(object):
         message_url = Label(text_frame, text = m_url, font = ("Helvetica", 15), justify = LEFT, fg = 'black')
         message_url.pack(side = TOP, padx = 4, pady = 4, expand = YES, fill = BOTH)
 
-        m_author = 'Created by Mengxue Cao'
+        m_author = 'Copyright © 2015 by Mengxue Cao'
         message_author = Label(text_frame, text = m_author, font = ("Helvetica", 15), justify = LEFT, fg = 'black')
         message_author.pack(side = TOP, padx = 4, pady = 4, expand = YES, fill = BOTH)
 
