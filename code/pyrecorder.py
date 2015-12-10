@@ -603,15 +603,14 @@ class Setting_window(object):
             # read in script list
             script_list = read_file(SCRIPT_FILE)
 
-            # define wavefile name
-            
-            if len(script_list) >= 10:
+            # define wavefile name dynamically based on file counts
+            if len(script_list) >= 10 and len(script_list) < 100:
                 filename_format = '{0:s}{1:02d}{2:s}'                
 
-            elif len(script_list) >= 100:
+            elif len(script_list) >= 100 and len(script_list) < 1000:
                 filename_format = '{0:s}{1:03d}{2:s}'
 
-            elif len(script_list) >= 1000:
+            elif len(script_list) >= 1000 and len(script_list) < 10000:
                 filename_format = '{0:s}{1:04d}{2:s}'
 
             wavefile_name = filename_format.format(WAV_PATH, script_count + 1, '.wav')
