@@ -24,4 +24,4 @@ version 1.0 published
 
 ## License
 
-* see [LICENSE] https://github.com/smilett/PyRecorder/blob/master/LICENSE
+* see [LICENSE] (https://github.com/smilett/PyRecorder/blob/master/LICENSE)
