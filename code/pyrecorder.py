@@ -410,7 +410,7 @@ class About_window(object):
         message_name = Label(text_frame, text = m_name, font = ("Papyrus", 30, "bold"), justify = LEFT, fg = 'RoyalBlue')
         message_name.pack(side = TOP, padx = 4, pady = 4, expand = YES, fill = BOTH)
 
-        m_intro = 'helps phonetics do easy redording'
+        m_intro = 'helps phoneticians do easy redording'
         message_intro = Label(text_frame, text = m_intro, font = ("Papyrus", 20), justify = LEFT, fg = 'RoyalBlue')
         message_intro.pack(side = TOP, padx = 4, pady = 4, expand = YES, fill = BOTH)
 
