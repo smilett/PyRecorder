@@ -89,6 +89,7 @@ def play_wave():
         # update button states
         button_stop.configure(state = DISABLED)
         button_record.configure(state = NORMAL)
+        button_play.configure(state = NORMAL)
         if script_count > 0:
             button_back.configure(state = NORMAL)
         if script_count < len(script_list) - 1:
@@ -120,6 +121,7 @@ def button_record_Click():
     button_play.configure(state = DISABLED)
     button_back.configure(state = DISABLED)
     button_next.configure(state = DISABLED)
+    button_record.configure(state = DISABLED)
 
     wav_in = PyAudio()
     stream_in = wav_in.open(format = FORMAT, channels = CHANNELS, rate = RATE, input = True, frames_per_buffer = CHUNK) 
@@ -138,6 +140,7 @@ def button_play_Click():
     button_record.configure(state = DISABLED)
     button_back.configure(state = DISABLED)
     button_next.configure(state = DISABLED)
+    button_play.configure(state = DISABLED)
 
     wav_out = PyAudio()
     wave_form = wave.open(wavefile_name, 'rb')
@@ -169,7 +172,7 @@ def button_stop_Click():
         # update button states
         button_stop.configure(state = DISABLED)
         button_play.configure(state = NORMAL)
-        button_record.configure(state = NORMAL)
+        button_record.configure(state = NORMAL)        
         if script_count > 0:
             button_back.configure(state = NORMAL)
         if script_count < len(script_list) - 1:
@@ -255,7 +258,7 @@ def button_quit_Click():
 def button_settings_Click():
     Setting_window(parameters)    
 
-def button_about_Click():
+def show_about():
     About_window()         
 
 def maximise ():
@@ -268,6 +271,8 @@ def maximise ():
     top_blank = (h - window_height) / 2
     root.geometry("%dx%d+%d+%d" % (window_width, window_height, left_blank, top_blank))
 
+def help_info():
+    Help_window()
 
 ##################
 #                #
@@ -276,8 +281,28 @@ def maximise ():
 ##################
 root = Tk()
 
-# read in script file
-#script_list = read_file(SCRIPT_FILE)
+# create a manu bar for the application
+menubar = Menu(root)
+
+# modify the about menu in apple menu bar
+appmenu = Menu(menubar, name='apple')
+
+menubar.add_cascade(menu = appmenu)
+appmenu.add_command(label = 'About PyRecorder', command = show_about)
+appmenu.add_separator()
+
+# add window menu
+windowmenu = Menu(menubar, name='window')
+menubar.add_cascade(menu=windowmenu, label='Window')
+
+# add help menu
+helpmenu = Menu(menubar, name = 'help')
+menubar.add_cascade(menu = helpmenu, label = 'Help')
+root.createcommand('tk::mac::ShowHelp', help_info)
+
+# apply menu
+root.config(menu = menubar)
+
 
 # constants for controlling layout
 button_width = 8
@@ -384,16 +409,9 @@ button_quit.configure(text = "Quit", font = ("Helvetica", 15))
 button_quit.configure(width = button_width, padx = button_padx, pady = button_pady)
 button_quit.pack(side = RIGHT, padx = 4)
 
-# about button
-button_about = Button(foot_frame, command = button_about_Click)
-button_about.configure(text = "About", font = ("Helvetica", 15))
-button_about.configure(width = button_width, padx = button_padx, pady = button_pady)
-button_about.pack(side = LEFT)
-
-
 ############################
 #     Dialog window for    #
-#     programme about   #
+#     programme about      #
 ############################
 class About_window(object):
     
@@ -402,7 +420,7 @@ class About_window(object):
     def __init__(self):       
         
         self.top = Toplevel(About_window.root)
-        self.resize()     # resize the window
+        self.resize_about()     # resize the window
         self.top.wm_title('About')
 
         # disable inputs in the main window while setting window is open
@@ -428,21 +446,86 @@ class About_window(object):
         message_version.pack(side = TOP, padx = 4, pady = 4, expand = YES, fill = BOTH)
 
         m_url = 'https://github.com/smilett/PyRecorder'
-        message_url = Label(text_frame, text = m_url, font = ("Helvetica", 15), justify = LEFT, fg = 'black')
+        message_url = Label(text_frame, text = m_url, font = ("Helvetica", 15), justify = LEFT, fg = 'RoyalBlue')
         message_url.pack(side = TOP, padx = 4, pady = 4, expand = YES, fill = BOTH)
 
         m_author = 'Copyright © 2015 by Mengxue Cao'
         message_author = Label(text_frame, text = m_author, font = ("Helvetica", 15), justify = LEFT, fg = 'black')
         message_author.pack(side = TOP, padx = 4, pady = 4, expand = YES, fill = BOTH)
 
-    def resize(self):
-        w, h = self.top.winfo_screenwidth(), self.top.winfo_screenheight()
-        window_width = w * 0.3
-        window_height = h * 0.4
-        left_blank = (w - window_width) / 2
-        top_blank = (h - window_height) / 2
-        self.top.geometry("%dx%d+%d+%d" % (window_width, window_height, left_blank, top_blank))
+    def resize_about(self):
+        about_w, about_h = self.top.winfo_screenwidth(), self.top.winfo_screenheight()
+        about_window_width = about_w * 0.3
+        about_window_height = about_h * 0.4
+        about_left_blank = (about_w - about_window_width) / 2
+        about_top_blank = (about_h - about_window_height) / 2
+        self.top.geometry("%dx%d+%d+%d" % (about_window_width, about_window_height, about_left_blank, about_top_blank))
 
+############################
+#     Dialog window for    #
+#     programme help       #
+############################
+class Help_window(object):
+    
+    root = None    
+
+    def __init__(self):       
+        
+        self.top = Toplevel(Help_window.root)
+        self.resize_help()     # resize the window
+        self.top.wm_title('Help')
+
+        text_frame_width = int(0.9 * window_width)
+
+        # disable inputs in the main window while setting window is open
+        self.top.grab_set()
+
+        #########################
+        #      text frame       #
+        #########################
+        text_frame = Frame(self.top)
+        text_frame.pack(expand = YES, fill = BOTH, ipadx = 10, padx = 10)
+
+        intro_info = 'Get started by the following steps!'        
+        message_intro = Label(text_frame, text = intro_info, font = ("Helvetica", 15, "bold"), justify = LEFT, wraplength = text_frame_width)
+        message_intro.pack(side = TOP, padx = 4, pady = 4, expand = YES, fill = BOTH)
+        
+        help_info_1 = '1. Prepare a file contains recording scripts, where each line contains only one sentence (or word).'
+        message_help_1 = Label(text_frame, text = help_info_1, font = ("Helvetica", 15), anchor = W, justify = LEFT, wraplength = text_frame_width)
+        message_help_1.pack(side = TOP, padx = 4, pady = 4, expand = YES, fill = BOTH)
+
+        help_info_2 = '2. Set parameters by clicking the \"Setting\" button.'        
+        message_help_2 = Label(text_frame, text = help_info_2, font = ("Helvetica", 15), anchor = W, justify = LEFT, wraplength = text_frame_width)
+        message_help_2.pack(side = TOP, padx = 4, pady = 4, expand = YES, fill = BOTH)
+
+        help_info_3 = '3. Click \"Record\" to start recording, and click \"Stop\" to stop.'
+        message_help_3 = Label(text_frame, text = help_info_3, font = ("Helvetica", 15), anchor = W, justify = LEFT, wraplength = text_frame_width)
+        message_help_3.pack(side = TOP, padx = 4, pady = 4, expand = YES, fill = BOTH)
+
+        help_info_4 = '4. Click \"Play\" to play back.'
+        message_help_4 = Label(text_frame, text = help_info_4, font = ("Helvetica", 15), anchor = W, justify = LEFT, wraplength = text_frame_width)
+        message_help_4.pack(side = TOP, padx = 4, pady = 4, expand = YES, fill = BOTH)
+
+        help_info_5 = '5. Click \"Back\" and \"Next\" to navigate.'
+        message_help_5 = Label(text_frame, text = help_info_5, font = ("Helvetica", 15), anchor = W, justify = LEFT, wraplength = text_frame_width)
+        message_help_5.pack(side = TOP, padx = 4, pady = 4, expand = YES, fill = BOTH)        
+
+        url_info = 'Find the README file on project homepage'
+        url_link = r'https://github.com/smilett/PyRecorder'
+        button_url = Button(text_frame, text = url_info, font = ("Helvetica", 15), command = lambda: self.openurl(url_link))
+        button_url.pack(side = TOP, ipady = 5, pady = 5)
+
+    def openurl(self, url):
+        import webbrowser
+        webbrowser.open_new(url)
+
+    def resize_help(self):
+        help_w, help_h = self.top.winfo_screenwidth(), self.top.winfo_screenheight()
+        help_window_width = help_w * 0.55
+        help_window_height = help_h * 0.4
+        help_left_blank = (help_w - help_window_width) / 2
+        help_top_blank = (help_h - help_window_height) / 2
+        self.top.geometry("%dx%d+%d+%d" % (help_window_width, help_window_height, help_left_blank, help_top_blank))
 
 
 ############################
