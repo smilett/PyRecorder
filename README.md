@@ -28,7 +28,7 @@ The code is written in Python 2. To run the programme, PyAudio and Tkinter are r
 
 ## Usage
 
-1. Prepare a file contains recording scripts. In the file, each line should only contain one sentences (or words). 
+1. Prepare a file contains recording scripts. In the file, each line should only contain one sentence (or word). 
 2. Run the code with "python PyRecorder.py".
 3. Set parameters by clicking the "Setting" button.
 4. Click "Record" to start recording, and click "Stop" to stop.
