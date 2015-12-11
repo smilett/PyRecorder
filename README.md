@@ -45,8 +45,8 @@ When doing recording or playing, a warning will shown up in the command line, sh
 
 ## History
 
-2015-12-11 version 1.0.1 published
-2015-12-10 version 1.0.0 published
+* 2015-12-11 version 1.0.1 published
+* 2015-12-10 version 1.0.0 published
 
 ## License
 
