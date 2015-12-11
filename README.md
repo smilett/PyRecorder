@@ -45,9 +45,8 @@ When doing recording or playing, a warning will shown up in the command line, sh
 
 ## History
 
-* 2015-12-11 version 1.0.1 published
-* 2015-12-10 version 1.0.0 published
+see [Changelog] (https://github.com/smilett/PyRecorder/blob/master/CHANGELOG.md) file.
 
 ## License
 
-MIT license, see [LICENSE] (https://github.com/smilett/PyRecorder/blob/master/LICENSE)
+MIT license, see [LICENSE] (https://github.com/smilett/PyRecorder/blob/master/LICENSE) file.
