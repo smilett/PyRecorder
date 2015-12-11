@@ -37,8 +37,7 @@ The code is written in Python 2. To run the programme, PyAudio and Tkinter are r
 
 ## Compatibility
 
-The programme is, by now, only tested under OS X EI Capitan (10.11.2) with python 2.7.11.
-However, the code should be able to run on other platforms such as Linux and Windows, based on the cross-platform compabiity of python.
+The programme is, by now, only tested under OS X EI Capitan (10.11.2) with python 2.7.11. The menu bar feature is specifically designed for OS X platform. However, with some small modifications, the code should be able to run on other platforms such as Linux and Windows, based on the cross-platform compabiity of python.
 
 ## Known issues
 
@@ -46,7 +45,8 @@ When doing recording or playing, a warning will shown up in the command line, sh
 
 ## History
 
-2015-12-10 version 1.0 published
+2015-12-11 version 1.0.1 published
+2015-12-10 version 1.0.0 published
 
 ## License
 

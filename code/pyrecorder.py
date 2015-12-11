@@ -441,7 +441,7 @@ class About_window(object):
         message_intro = Label(text_frame, text = m_intro, font = ("Papyrus", 20), justify = LEFT, fg = 'RoyalBlue')
         message_intro.pack(side = TOP, padx = 4, pady = 4, expand = YES, fill = BOTH)
 
-        m_version = 'version 1.0'
+        m_version = 'version 1.0.1'
         message_version = Label(text_frame, text = m_version, font = ("Papyrus", 20), justify = LEFT, fg = 'RoyalBlue')
         message_version.pack(side = TOP, padx = 4, pady = 4, expand = YES, fill = BOTH)
 
