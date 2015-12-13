@@ -42,10 +42,10 @@ The programme is, by now, only tested under OS X EI Capitan (10.11.2) with pytho
 
 ## Standalone app
 
-If you donot have a runable python environment, or if you just donot want to install those required packages, a standalone OS X app (see [standalone_app] (https://github.com/smilett/PyRecorder/blob/master/standalone_app)) is built for your choice.
+If you donot have a runable python environment, or if you just donot want to install those required packages, a standalone OS X app (see [standalone_app] (https://github.com/smilett/PyRecorder/tree/master/standalone_app)) is your good choice.
 
-The app is build by "py2app". If you would like to biuld your own version of PyRecorder OS X app, please find more information on [py2app] (https://pythonhosted.org/py2app/) homepage.
-* NOTE: when building you app using "pyapp", please set `'argv_emulation': False` in your setup.py file. Otherwise, your app would not appear at front when you open it.
+The app is built by "py2app". If you would like to biuld your own version of PyRecorder OS X app, please find more information on [py2app] (https://pythonhosted.org/py2app/) homepage.
+* NOTE: when building you app using "py2app", please set `'argv_emulation': False` in your "setup.py" file. Otherwise, your app would not appear at front when you open it.
 
 ## Known issues
 
