@@ -17,15 +17,6 @@ The GUI is based on [Tkinter] (https://wiki.python.org/moin/TkInter). The goal o
 	* if the number of sentences is in [100, 1000), use 001.wav, 002.wav ...
 	* ...
 
-## Required dependencies
-
-The code is written in Python 2. To run the programme, PyAudio and Tkinter are required.
-* PyAudio provides Python bindings for PortAudio.
-	* see [PyAudio] (http://people.csail.mit.edu/hubert/pyaudio/) home page for installation guids and more information.
-* Tkinter is Python's de-facto standard GUI package.
-	* see [Tkinter] (https://wiki.python.org/moin/TkInter) wiki page for more information.
-	* also see a [Tkinter tutorial] (http://effbot.org/tkinterbook/) from effbot.org.
-
 ## Usage
 
 1. Prepare a file contains recording scripts. In the file, each line should only contain one sentence (or word). 
@@ -35,9 +26,26 @@ The code is written in Python 2. To run the programme, PyAudio and Tkinter are r
 5. Click "Play" to play back.
 6. Click "Back" and "Next" to navigate.
 
+## Required dependencies
+
+The code is written in Python 2. To run the programme, PyAudio and Tkinter are required.
+* PyAudio provides Python bindings for PortAudio.
+	* see [PyAudio] (http://people.csail.mit.edu/hubert/pyaudio/) home page for installation guids and more information.
+* Tkinter is Python's de-facto standard GUI package.
+	* see [Tkinter] (https://wiki.python.org/moin/TkInter) wiki page for more information.
+	* also see a [Tkinter tutorial] (http://effbot.org/tkinterbook/) from effbot.org.
+
 ## Compatibility
 
 The programme is, by now, only tested under OS X EI Capitan (10.11.2) with python 2.7.11. The menu bar feature is specifically designed for OS X platform. However, with some small modifications, the code should be able to run on other platforms such as Linux and Windows, based on the cross-platform compabiity of python.
+
+
+## Standalone app
+
+If you donot have a runable python environment, or if you just donot want to install those required packages, a standalone OS X app (see [standalone_app] (https://github.com/smilett/PyRecorder/blob/master/standalone_app)) is built for your choice.
+
+The app is build by "py2app". If you would like to biuld your own version of PyRecorder OS X app, please find more information on [py2app] (https://pythonhosted.org/py2app/) homepage.
+* NOTE: when building you app using "pyapp", please set `'argv_emulation': False` in your setup.py file. Otherwise, your app would not appear at front when you open it.
 
 ## Known issues
 

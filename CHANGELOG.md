@@ -1,6 +1,12 @@
 # _Changelog_
 
 ### version 1.0.1
+_Updated on 2015-12-13_
+
+###### New features:
+* a standalone OS X app biult from the source code is added.
+
+### version 1.0.1
 _Updated on 2015-12-11_
 
 ###### New features:
