@@ -2,8 +2,8 @@
 
 **_by Mengxue Cao_**
 
-PyRecorder is a voice recorder written in Python. The audio module is based on ![PyAudio] (http://people.csail.mit.edu/hubert/pyaudio/).
-The GUI is based on ![Tkinter] (https://wiki.python.org/moin/TkInter). The goal of this programme is to help phoneticians do easy recording.
+PyRecorder is a voice recorder written in Python. The audio module is based on [PyAudio](http://people.csail.mit.edu/hubert/pyaudio/).
+The GUI is based on [Tkinter](https://wiki.python.org/moin/TkInter). The goal of this programme is to help phoneticians do easy recording.
 
 ## Features
 
@@ -30,10 +30,10 @@ The GUI is based on ![Tkinter] (https://wiki.python.org/moin/TkInter). The goal 
 
 The code is written in Python 2. To run the programme, PyAudio and Tkinter are required.
 * PyAudio provides Python bindings for PortAudio.
-	* see ![PyAudio] (http://people.csail.mit.edu/hubert/pyaudio/) home page for installation guids and more information.
+	* see [PyAudio](http://people.csail.mit.edu/hubert/pyaudio/) home page for installation guids and more information.
 * Tkinter is Python's de-facto standard GUI package.
-	* see ![Tkinter] (https://wiki.python.org/moin/TkInter) wiki page for more information.
-	* also see a ![Tkinter tutorial] (http://effbot.org/tkinterbook/) from effbot.org.
+	* see [Tkinter](https://wiki.python.org/moin/TkInter) wiki page for more information.
+	* also see a [Tkinter tutorial](http://effbot.org/tkinterbook/) from effbot.org.
 
 ## Compatibility
 
@@ -42,9 +42,9 @@ The programme is, by now, only tested under OS X EI Capitan (10.11.2) with pytho
 
 ## Standalone app
 
-If you donot have a runable python environment, or if you just donot want to install those required packages, a standalone OS X app (see ![standalone_app] (https://github.com/smilett/PyRecorder/tree/master/standalone_app)) is your good choice.
+If you donot have a runable python environment, or if you just donot want to install those required packages, a standalone OS X app (see [standalone_app](https://github.com/smilett/PyRecorder/tree/master/standalone_app)) is your good choice.
 
-The app is built by "py2app". If you would like to biuld your own version of PyRecorder OS X app, please find more information on ![py2app] (https://pythonhosted.org/py2app/) homepage.
+The app is built by "py2app". If you would like to biuld your own version of PyRecorder OS X app, please find more information on [py2app](https://pythonhosted.org/py2app/) homepage.
 * NOTE: when building you app using "py2app", please set `'argv_emulation': False` in your "setup.py" file. Otherwise, your app would not appear at front when you open it.
 
 ## Known issues
@@ -53,8 +53,8 @@ When doing recording or playing, a warning will shown up in the command line, sh
 
 ## History
 
-see ![Changelog] (https://github.com/smilett/PyRecorder/blob/master/CHANGELOG.md) file.
+see [Changelog](https://github.com/smilett/PyRecorder/blob/master/CHANGELOG.md) file.
 
 ## License
 
-MIT license, see ![LICENSE] (https://github.com/smilett/PyRecorder/blob/master/LICENSE) file.
+MIT license, see [LICENSE](https://github.com/smilett/PyRecorder/blob/master/LICENSE) file.
